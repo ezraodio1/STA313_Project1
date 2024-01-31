@@ -1,5 +1,5 @@
 ---
-title: "Project title"
+title: "Taylor Swift (Soon-to-be Kelse)"
 subtitle: "Proposal"
 format: html
 editor: visual
@@ -15,13 +15,27 @@ library(tidyverse)
 ## Dataset
 
 A brief description of your dataset including its provenance, dimensions, etc. as well as the reason why you chose this dataset.
-
 Make sure to load the data and use inline code for some of this information.
+
+- The data we are using comes from Genius and the Spotify API. The creator of this package is W. Jake Thompson. The contents of this data are focused on the audio characteristics and the lyrics of the songs. The Spotify API gives songs a variety of audio scores based on the vibe of the song.
+- There are three csv files in this data set: taylor_album_songs.csv, taylor_all_songs.csv, taylor_albums.csv
+  - The first two are very similar. They both include the following variables: album_name, ep, album_release, track_number, track_name, artist,     featuring, bonus_track, promotional_release, single_release, track_release, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, time_signature, duration_ms, explicit, key_name, mode_name, key_mode, lyrics. 
+  -The only difference from these two ( taylor_album_songs.csv and taylor_all_songs.csv) is that the latter includes all of her songs, not just songs that came off of her official studio albums. Specifically, taylor_album_songs excludes singles released separately from an album, and also excludes the original releases of albums that now have a Taylor-owned alternative in support of artists wanting to own their own music. 
+- The taylor_albums.csv includes the variables: album_name, ep, album_release, metacritic_score, user_score. 
+  - We do not have any current plans to use this portion of data set. 
+
 
 ## Questions
 
 The two questions you want to answer.
 
+1) How do Taylor Swift’s single releases differ from the songs on the full albums?
+2) How have Taylor Swift’s songs changed over time?
+
+
 ## Analysis plan
 
 A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
+
+- For the first question, we plan on comparing different numerical characteristics of the singles, such as danceability and energy, from the single releases, to the average of these values from all of the songs on that album as a whole. There are many different visualizations from the many different variables as part of this dataset.
+- For the second question, we again could compare how her songs have changed over time by looking at the different numerical characteristics of the songs to see how her style has changed. We could look at specifically acoustic songs to see if she has been making more or less acoustic songs over time. We can look at the metacritic scores of the albums over time to see if she has been scored higher the longer she has been popular. We also might be able to visualize what individual words she has used more or less over time, such as the words “love”, “hate” or anything in between.
