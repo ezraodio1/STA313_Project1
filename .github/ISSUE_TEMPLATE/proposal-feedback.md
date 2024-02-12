@@ -23,4 +23,4 @@ Once you've closed all of the other issues, close this one as well, so that goin
 | Proposal | 5         |     2  |
 | Workflow | 1         |     0  |
 | Teamwork | 1         |     0  |
-| Total    | 10        |     0  |
+| Total    | 10        |     2  |
