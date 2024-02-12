@@ -6,7 +6,7 @@ labels: ''
 assignees: ''
 ---
 
-Dear TEAM_NAME: Below is the score breakdown for your proposal. Details of things that should be updated/revised are provided in separate issues. As you address them, you should close the individual issues.
+Dear ream_robots: Below is the score breakdown for your proposal. Details of things that should be updated/revised are provided in separate issues. As you address them, you should close the individual issues.
 
 You can do this in one of two ways:
 
@@ -19,8 +19,8 @@ Once you've closed all of the other issues, close this one as well, so that goin
 
 |          | Available | Earned |
 |----------|-----------|--------|
-| Data     | 3         |        |
-| Proposal | 5         |        |
-| Workflow | 1         |        |
-| Teamwork | 1         |        |
-| Total    | 10        |        |
+| Data     | 3         |     0  |
+| Proposal | 5         |     2  |
+| Workflow | 1         |     0  |
+| Teamwork | 1         |     0  |
+| Total    | 10        |     0  |
