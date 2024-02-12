@@ -6,7 +6,7 @@ labels: ''
 assignees: ''
 ---
 
-Dear ream_robots: Below is the score breakdown for your proposal. Details of things that should be updated/revised are provided in separate issues. As you address them, you should close the individual issues.
+Dear team_robots: Below is the score breakdown for your proposal. Details of things that should be updated/revised are provided in separate issues. As you address them, you should close the individual issues.
 
 You can do this in one of two ways:
 
