@@ -16,28 +16,25 @@ library(tidyverse)
 
 A brief description of your dataset including its provenance, dimensions, etc. as well as the reason why you chose this dataset. Make sure to load the data and use inline code for some of this information.
 
--   The data we are using comes from Genius and the Spotify API. The creator of this package is W. Jake Thompson. The contents of this data are focused on the audio characteristics and the lyrics of the songs. The Spotify API gives songs a variety of audio scores based on the vibe of the song.
--   There are three csv files in this data set: taylor_album_songs.csv, taylor_all_songs.csv, taylor_albums.csv
-    -   The first two are very similar. They both include the following variables: album_name, ep, album_release, track_number, track_name, artist, featuring, bonus_track, promotional_release, single_release, track_release, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, time_signature, duration_ms, explicit, key_name, mode_name, key_mode, lyrics.
-    -   The only difference from these two ( taylor_album_songs.csv and taylor_all_songs.csv) is that the latter includes all of her songs, not just songs that came off of her official studio albums. Specifically, taylor_album_songs excludes singles released separately from an album, and also excludes the original releases of albums that now have a Taylor-owned alternative in support of artists wanting to own their own music.
--   The taylor_albums.csv includes the variables: album_name, ep, album_release, metacritic_score, user_score.
-    -   We do not have any current plans to use this portion of data set.
--   We chose this data set because we love Taylor Swift and Travis Kelce! But more seriously, when we looked at the data, we noticed it there was a wide variety of types of variables and very rich data. We saw it there was enough data to complete the project and think we can create something in line with our intersts and also some interesting findings!
-
 ```{r}
-#loading in the data by reading directly from github 
+#loading in the data
 
 
 taylor_album_songs <- readr::read_csv('data/taylor_album_songs.csv', show_col_types = FALSE)
 taylor_all_songs <- readr::read_csv('data/taylor_all_songs.csv', show_col_types = FALSE)
 taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALSE)
-
-glimpse(taylor_album_songs)
-glimpse(taylor_all_songs)
-glimpse(taylor_albums)
-
-
 ```
+
+-   The data we are using comes from Genius and the Spotify API. The creator of this package is W. Jake Thompson. The contents of this data are focused on the audio characteristics and the lyrics of the songs. The Spotify API gives songs a variety of audio scores based on the vibe of the song.
+-   There are three csv files in this data set: taylor_album_songs.csv, taylor_all_songs.csv, taylor_albums.csv
+    -   The first two are very similar. They both include the following variables: album_name, ep, album_release, track_number, track_name, artist, featuring, bonus_track, promotional_release, single_release, track_release, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, time_signature, duration_ms, explicit, key_name, mode_name, key_mode, lyrics.
+    -   The only difference from these two ( taylor_album_songs.csv and taylor_all_songs.csv) is that the latter includes all of her songs, not just songs that came off of her official studio albums. Specifically, taylor_album_songs excludes singles released separately from an album, and also excludes the original releases of albums that now have a Taylor-owned alternative in support of artists wanting to own their own music.
+    -   The taylor_album_songs dataset includes `` `r nrow(taylor_album_songs)` `` rows and `` `r ncol(taylor_album_songs)` `` columns.
+    -   The taylor_all_songs dataset includes `` `r nrow(taylor_all_songs)` `` rows and `` `r ncol(taylor_all_songs)` `` columns.
+    -   The taylor_albums dataset includes `` `r nrow(taylor_albums)` `` rows and `` `r ncol(taylor_albums)` `` columns.
+-   The taylor_albums.csv includes the variables: album_name, ep, album_release, metacritic_score, user_score.
+    -   We do not have any current plans to use this portion of data set.
+-   We chose this data set because we love Taylor Swift and Travis Kelce! But more seriously, when we looked at the data, we noticed it there was a wide variety of types of variables and very rich data. We saw it there was enough data to complete the project and think we can create something in line with our interests and also some interesting findings!
 
 ## Questions
 
