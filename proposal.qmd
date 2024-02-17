@@ -1,5 +1,5 @@
 ---
-title: "Taylor Swift (Soon-to-be Kelse)"
+title: "Taylor Swift (Soon-to-be Kelce)"
 subtitle: "Proposal"
 format: html
 editor: visual
@@ -28,9 +28,9 @@ A brief description of your dataset including its provenance, dimensions, etc. a
 #loading in the data by reading directly from github 
 
 
-taylor_album_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-10-17/taylor_album_songs.csv', show_col_types = FALSE)
-taylor_all_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-10-17/taylor_all_songs.csv', show_col_types = FALSE)
-taylor_albums <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-10-17/taylor_albums.csv', show_col_types = FALSE)
+taylor_album_songs <- readr::read_csv('data/taylor_album_songs.csv', show_col_types = FALSE)
+taylor_all_songs <- readr::read_csv('data/taylor_all_songs.csv', show_col_types = FALSE)
+taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALSE)
 
 glimpse(taylor_album_songs)
 glimpse(taylor_all_songs)
