@@ -41,7 +41,20 @@ taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALS
 The two questions you want to answer.
 
 1)  How do Taylor Swift’s single releases differ from the songs on the full albums?
+    -   Variable: single_release Type: Double Description: date of single release
+    -   Variable: danceability Type: Double Description: Spotify danceability score. A value of 0.0 is least danceable and 1.0 is most danceable.
+    -   Variable: energy Type: Double Description: Spotify energy score. Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity.
+    -   Variable: tempo Type: Double Description: The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration.
+    -   Variable: album_release Type: Double Description: Album release date
+    -   Variable: track_number Type: Integer Description: Track Number
 2)  How have Taylor Swift’s songs changed over time?
+    -   Variable: album_release Type: Double Description: Album release date
+    -   Variable: track_number Type: Integer Description: Track Number
+    -   Variable: track_release Type: Double Description: Date of track release
+    -   Variable: metacritic_score Type: Integer Description: Metacritic Score
+    -   Variable: user_score Type: Double Description: User Score
+    -   Variable: acousticness Type: Double Description: Spotify acousticness score. A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
+    -   Variable: lyrics Type: list Description: Track lyrics. These values are all NA. To get the lyrics in nested tibbles, install.packages("taylor") and use the source data.
 
 ## Analysis plan
 
