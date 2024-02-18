@@ -55,3 +55,18 @@ A plan for answering each of the questions including the variables involved, var
     -   Variable: album_release Type: Double Description: Album release date
     -   Variable: track_number Type: Integer Description: Track Number
 -   For the second question, we again could compare how her songs have changed over time by looking at the different numerical characteristics of the songs to see how her style has changed. We could look at specifically acoustic songs to see if she has been making more or less acoustic songs over time. We can look at the metacritic scores of the albums over time to see if she has been scored higher the longer she has been popular. We also might be able to visualize what individual words she has used more or less over time, such as the words “love”, “hate” or anything in between.
+
+    -   Variable: album_release Type: Double Description: Album release date
+    -   Variable: track_number Type: Integer Description: Track Number
+    -   Variable: track_release Type: Double Description: Date of track release
+    -   Variable: metacritic_score Type: Integer Description: Metacritic Score
+    -   Variable: user_score Type: Double Description: User Score
+    -   Variable: acousticness Type: Double Description: Spotify acousticness score. A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
+    -   Variable: lyrics Type: list Description: Track lyrics. These values are all NA. To get the lyrics in nested tibbles, install.packages("taylor") and use the source data.
+
+```{r}
+install.packages("taylor")
+library(taylor)
+taylor_all_songs$lyrics
+
+```
