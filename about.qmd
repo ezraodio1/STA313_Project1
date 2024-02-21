@@ -8,4 +8,4 @@ This project was developed by **\[team name\]** For [STA/ISS 313: Advanced Data 
 
 -   Ella Hartman: Senior from Birmingham, Alabama studying Computer Science and Economics.
 -   Noah Costa: Senior from Long Island, New York studying Computer Science
--   Ezra Odio: Junior from Weston, Massachusets studying Computer Science and Statistics.
+-   Ezra Odio: Junior from Weston, Massachusetts studying Computer Science and Statistics.
