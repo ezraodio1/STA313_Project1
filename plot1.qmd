@@ -19,26 +19,98 @@ library(tidyverse)
 taylor_album_songs <- readr::read_csv('data/taylor_album_songs.csv', show_col_types = FALSE)
 taylor_all_songs <- readr::read_csv('data/taylor_all_songs.csv', show_col_types = FALSE)
 taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALSE)
+
+taylor_streams <- readr::read_csv('data/Taylor_Swift_streams.csv', show_col_types = FALSE)
+taylor_streams
+```
+
+```{r}
+#| label: edit-data
+#| message: false
+
+taylor_all_songs <- taylor_all_songs |>
+  drop_na(album_name) |>
+  mutate(is_single = !(is.na(single_release)))
+
+print(taylor_all_songs)
+
+taylor_albums_dance <- taylor_all_songs |>
+  drop_na(danceability) |>
+  group_by(album_name) |>
+  summarise(album_dance = mean(danceability)) 
+
+taylor_albums_energy <- taylor_all_songs |>
+  drop_na(energy) |>
+  group_by(album_name) |>
+  summarise(album_energy = mean(energy))
+
+taylor_singles_energy <- taylor_all_songs %>%
+  filter(is_single == TRUE) %>%
+  group_by(album_name) %>%
+  summarise(singles_energy = mean(energy))
+
+print(taylor_singles_energy)
+
+taylor_albums_data_int <- merge(taylor_albums_dance, taylor_albums_energy)
+taylor_albums_data <- merge(taylor_albums_data_int, taylor_singles_energy)
+taylor_albums_data
+
+
+
 ```
 
 ```{r}
 #| label: create-plot
 #| message: false
 
-taylor_all_songs <- taylor_all_songs(mutate)
-
-ggplot(taylor_all_songs, aes(x = single_release, y = transmission, 
-                           fill = transmission)) +
-  geom_density_ridges(show.legend = FALSE, alpha = 0.5) +
-  facet_wrap(~mpg_type, ncol = 1, scales = "free_y") +
+ggplot(taylor_albums_data, aes(x = album_name, y = album_energy, fill = album_name)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#7B96AF", "#ACA38D", "#BD9365", "#5F4A30", 
+                               "#4D4D4D", "#DEA9C9", "#A26A5B", "#982F47", 
+                               "#982839", "#0A0A0A", "#704073", "#4497BA", 
+                               "#B5283A")) +
+  #scale_y_continuous(breaks = seq(0, 1.0, 5), labels = seq(0, 1.0, 5)) + 
   theme_bw() +
-  theme(strip.background = element_rect(fill = "grey25"),
-        strip.text = element_text(color = "white", face = "bold")) +
-  scale_x_continuous(breaks = seq(0, 60, 10), labels = seq(0, 60, 10)) +
-  scale_fill_colorblind() + 
-  labs(title = "MPG by transmission",
-       x = "MPG",
-       y = "Transmission",
-       caption = "Source: Environmental Protection Agency, 2021")
+  theme(axis.text.x = element_blank()) +
+  labs(title = "Taylor Swift Song Energy of Albums",
+       subtitle = "",
+       x = "Albums",
+       y = "Energy",
+       fill = "Album",
+       caption = "Source: Tidy Tuesday")
+```
+
+```{r}
+#| label: create-plot2
+#| message: false
+
+combined_data <- taylor_albums_data %>%
+  left_join(taylor_all_songs, by = c("album_name" = "album_name")) %>%
+  mutate(is_single = !(is.na(single_release)))
+
+# Create a new column 'bar_type' to differentiate between all songs and singles
+combined_data <- combined_data %>%
+  mutate(bar_type = ifelse(is_single, "Single", "All Songs"))
+
+# Plot the bar chart
+ggplot(combined_data, aes(x = album_name, y = album_energy, fill = bar_type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_fill_manual(values = c("#7B96AF", "#BD9365")) +  # Adjust colors as needed
+  theme_bw() +
+  theme(axis.text.x = element_blank()) +
+  labs(
+    title = "Taylor Swift Song Energy of Albums",
+    subtitle = "",
+    x = "Albums",
+    y = "Energy",
+    fill = "Bar Type",
+    caption = "Source: Tidy Tuesday"
+  )
+```
+
+```{r}
+#| label: ezra-chunk
+
+
 
 ```
