@@ -31,7 +31,7 @@ You might also be interested in the [tayoRswift package](https://asteves.github.
 # `taylor_album_songs.csv`
 
 | variable            | class     | description                                                                                                                                                                                                                                                                                                     |
-|:--------------------------|:-----------------|:--------------------------|
+|:--------|:--------|:-----------------------------------------------------|
 | album_name          | character | Album name                                                                                                                                                                                                                                                                                                      |
 | ep                  | logical   | Is it an EP                                                                                                                                                                                                                                                                                                     |
 | album_release       | double    | Album release date                                                                                                                                                                                                                                                                                              |
@@ -65,7 +65,7 @@ You might also be interested in the [tayoRswift package](https://asteves.github.
 # `taylor_all_songs.csv`
 
 | variable            | class     | description                                                                                                                                                                                                                                                                                                     |
-|:--------------------------|:-----------------|:--------------------------|
+|:--------|:--------|:-----------------------------------------------------|
 | album_name          | character | Album name                                                                                                                                                                                                                                                                                                      |
 | ep                  | logical   | Is it an EP                                                                                                                                                                                                                                                                                                     |
 | album_release       | double    | Album release date                                                                                                                                                                                                                                                                                              |
@@ -105,3 +105,10 @@ You might also be interested in the [tayoRswift package](https://asteves.github.
 | album_release    | double    | Album release date |
 | metacritic_score | integer   | Metacritic score   |
 | user_score       | double    | User score         |
+
+
+# Taylor_Swift_streams.csv
+
+This data set was obtained from https://kworb.net/spotify/artist/06HL4z0CvFAxyc27GXpf02_songs.html
+
+The original data set contains song name, total streams, and daily streams as of Feb 21, 2024 for all Taylor Swift songs. For our purposes, we don't need data streams, so we got rid of that column when creating the .csv file.
