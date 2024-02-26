@@ -25,13 +25,12 @@ taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALS
 #| label: create_dataframe_for_plot2
 
 taylor_albums_stats <- taylor_all_songs |>
-  drop_na(energy, danceability, speechiness, acousticness, liveness, valence) |>
+  drop_na(energy, danceability, speechiness, acousticness, valence) |>
   group_by(album_name) |>
   summarise(
     album_energy = mean(energy),
     album_danceability = mean(danceability),
-    album_speechiness = mean(speechiness),
-    album_liveness = mean(liveness),
+    album_speechiness = mean(speechiness),,
     album_valence = mean(valence)
   )
 
@@ -45,13 +44,13 @@ ggplot(taylor_albums_plot2, aes(x = album_release)) +
   geom_point(aes(y = album_energy), color = "red") +
   geom_point(aes(y = album_danceability), color = "blue") +
   geom_point(aes(y = album_speechiness), color = "green") +
-  geom_point(aes(y = album_liveness), color = "orange") +
   geom_point(aes(y = album_valence), color = "purple") +
   geom_line(aes(y = album_energy), color = "red") +
   geom_line(aes(y = album_danceability), color = "blue") +
   geom_line(aes(y = album_speechiness), color = "green") +
-  geom_line(aes(y = album_liveness), color = "orange") +
-  geom_line(aes(y = album_valence), color = "purple")
-  
-
+  geom_line(aes(y = album_valence), color = "purple") +
+  geom_smooth(aes(y = album_energy), method = "lm", se = FALSE, color = "pink") +
+  geom_smooth(aes(y = album_danceability), method = "lm", se = FALSE, color = "pink") +
+  geom_smooth(aes(y = album_speechiness), method = "lm", se = FALSE, color = "pink") +
+  geom_smooth(aes(y = album_valence), method = "lm", se = FALSE, color = "pink")
 ```
