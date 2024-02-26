@@ -47,6 +47,17 @@ taylor_singles_energy <- taylor_all_songs %>%
 print(taylor_singles_energy)
 
 taylor_albums_data <- merge(taylor_albums_energy, taylor_singles_energy)
+
+taylor_albums_data <- taylor_albums_data |>
+  pivot_longer(
+    cols = c("album_energy", "singles_energy"),
+    names_to = "song_type",
+    values_to = "energy"
+  ) |>
+  mutate(
+    song_type = fct_recode(song_type, "album" = "album_energy", "single" = "singles_energy")
+  )
+
 taylor_albums_data
 
 
@@ -57,20 +68,23 @@ taylor_albums_data
 #| label: create-plot
 #| message: false
 
-ggplot(taylor_albums_data, aes(x = album_name, y = singles_energy, fill = album_name)) +
-  geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#7B96AF", "#ACA38D", "#BD9365", "#5F4A30", 
-                               "#4D4D4D", "#DEA9C9", "#A26A5B", "#982F47", 
-                               "#0A0A0A", "#704073", "#4497BA")) +
-  #scale_y_continuous(breaks = seq(0, 1.0, 5), labels = seq(0, 1.0, 5)) + 
-  theme_bw() +
-  theme(axis.text.x = element_blank()) +
-  labs(title = "Taylor Swift Song Energy of Albums",
-       subtitle = "",
-       x = "Albums",
-       y = "Energy",
-       fill = "Album",
-       caption = "Source: Tidy Tuesday")
+# ggplot(taylor_albums_data, aes(x = album_name, y = singles_energy, fill = album_name)) +
+#   geom_bar(stat = "identity") +
+#   scale_fill_manual(values = c("#7B96AF", "#ACA38D", "#BD9365", "#5F4A30", 
+#                                "#4D4D4D", "#DEA9C9", "#A26A5B", "#982F47", 
+#                                "#0A0A0A", "#704073", "#4497BA")) +
+#   #scale_y_continuous(breaks = seq(0, 1.0, 5), labels = seq(0, 1.0, 5)) + 
+#   theme_bw() +
+#   theme(axis.text.x = element_blank()) +
+#   labs(title = "Taylor Swift Song Energy of Albums",
+#        subtitle = "",
+#        x = "Albums",
+#        y = "Energy",
+#        fill = "Album",
+#        caption = "Source: Tidy Tuesday")
+
+ggplot(taylor_albums_data, aes(x = album_name, y = energy, fill = song_type)) +
+  geom_col(position = "dodge")
 ```
 
 ```{r}
