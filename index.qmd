@@ -16,6 +16,8 @@ editor: visual
 
 (1-2 paragraphs): Brief introduction to the dataset. You may repeat some of the information about the dataset provided in the introduction to the dataset on the TidyTuesday repository, paraphrasing on your own terms. Imagine that your project is a standalone document and the grader has no prior knowledge of the dataset.
 
+This project analyzes the taylor R package, which was created by W. Jake Thompson. The data comes from Genius and the Spotify API. The dataset includes three .csv files: taylor_album_songs, taylor_all_songs, and taylor_albums. The first two .csv files both include the same variables, with the only difference being that taylor_all_songs includes all her songs, rather than just the ones that came off of her official studio albums. Specifically, taylor_album_songs excludes singles released separately from an album, and also excludes the original releases of albums that now have a Taylor-owned alternative in support of artists wanting to own their own music. Due to this overlap, this project elects not to use the taylor_album_songs dataset in favor of the taylor_all_songs dataset. Relevant variables in this dataset for this project include album_name, album_release, single_release, energy, valence, and tempo. Additionally, this project uses the taylor_albums dataset and uses the album_name, album_release, metacritic_score and user_score variables from it. More information about all these variables and the datasets can be found in the README file.
+
 ## **Question 1**: Title that relates to the question you're answering
 
 ### Introduction
