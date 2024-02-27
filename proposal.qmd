@@ -66,7 +66,7 @@ A plan for answering each of the questions including the variables involved, var
     -   Variable: danceability Type: Double Description: Spotify danceability score. A value of 0.0 is least danceable and 1.0 is most danceable.
     -   Variable: energy Type: Double Description: Spotify energy score. Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity.
     -   Variable: tempo Type: Double Description: The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration.
-    -   Variable: album_release Type: Double Description: Album release date
+    -   Variable: album_release Type: Date Description: Album release date
     -   Variable: track_number Type: Integer Description: Track Number
 
 -   For the second question, we again could compare how her songs have changed over time by looking at the different numerical characteristics of the songs to see how her style has changed. We could look at specifically acoustic songs to see if she has been making more or less acoustic songs over time. We can look at the metacritic scores of the albums over time to see if she has been scored higher the longer she has been popular. We also might be able to visualize what individual words she has used more or less over time, such as the words “love”, “hate” or anything in between. One initial idea we have in terms of visualizing this is to use geom_line with time on the x axis and the score variable (ex. acousticness) on the y-axis to visualize the change overtime. The exact variables that will be used are
