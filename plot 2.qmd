@@ -22,7 +22,7 @@ taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALS
 ```
 
 ```{r}
-#| label: create_dataframe_for_plot2
+#| label: create_dataframe_for_plot2a
 
 taylor_albums_stats <- taylor_all_songs |>
   drop_na(energy, danceability, speechiness, acousticness, valence) |>
@@ -34,14 +34,14 @@ taylor_albums_stats <- taylor_all_songs |>
     album_valence = mean(valence)
   )
 
-taylor_albums_plot2 <- merge(taylor_albums, taylor_albums_stats)
+taylor_albums_plot2a <- merge(taylor_albums, taylor_albums_stats)
 
 ```
 
 ```{r}
 #| experimental_plot
 
-ggplot(taylor_albums_plot2, aes(x = album_release)) +
+ggplot(taylor_albums_plot2a, aes(x = album_release)) +
   geom_point(aes(y = album_energy), color = "red") +
   geom_point(aes(y = album_danceability), color = "blue") +
   geom_point(aes(y = album_speechiness), color = "green") +
@@ -59,7 +59,7 @@ ggplot(taylor_albums_plot2, aes(x = album_release)) +
 ```{r fig.height = 8, fig.width = 11}
 #| label: highlight_energy_plot
 
-ggplot(taylor_albums_plot2, aes(x = album_release)) +
+ggplot(taylor_albums_plot2a, aes(x = album_release)) +
   geom_point(aes(y = album_danceability), color = "gray") +
   geom_point(aes(y = album_speechiness), color = "gray") +
   geom_point(aes(y = album_valence), color = "gray") +
@@ -83,3 +83,45 @@ ggplot(taylor_albums_plot2, aes(x = album_release)) +
   )
 
 ```
+
+```{r}
+#| label: data-wrangle-plot2b
+
+#list of original album names and the names of their re-releases
+original_and_rereleased_albums <- c("Red", "Red (Taylor's Version)", "Fearless", "Fearless (Taylor's Version)")
+
+# Creating a new data frame with only the albums that have been re-released, their original, and the scores
+plot2b_data <- subset(taylor_albums, album_name %in% original_and_rereleased_albums) |>
+  mutate(user_score = user_score*10, 
+         taylor_owned = ifelse(grepl("Taylor's Version", album_name), TRUE, FALSE), 
+         album = case_when(grepl("Red", album_name) ~ "Red", 
+                           grepl("Fearless", album_name) ~ "Fearless", 
+                           TRUE ~ "" )) |>
+  select(album, metacritic_score, user_score, taylor_owned) 
+
+plot2b_data <- plot2b_data |>
+  pivot_longer(
+    cols = c("metacritic_score", "user_score"), 
+         names_to = "score_type", 
+         values_to = "score") |>
+  mutate(
+    score_type = fct_recode(score_type, "metacritic" = "metacritic_score", "user" = "user_score")
+  )
+
+plot2b_data
+
+#learned grepl from chatgpt, because I was trying use contains
+```
+
+```{r}
+#| label: plot2b-plotting
+
+ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) + 
+  geom_col(position = "dodge") + 
+  facet_wrap(~album)
+
+
+
+```
+
+
