@@ -55,26 +55,8 @@ taylor_albums_plot2a <- taylor_albums_plot2a |>
 
 ```
 
-```{r}
-#| label: experimental_plot
-
-# ggplot(taylor_albums_plot2a, aes(x = album_release)) +
-#   geom_point(aes(y = album_energy), color = "red") +
-#   geom_point(aes(y = album_danceability), color = "blue") +
-#   geom_point(aes(y = album_speechiness), color = "green") +
-#   geom_point(aes(y = album_valence), color = "purple") +
-#   geom_line(aes(y = album_energy), color = "red") +
-#   geom_line(aes(y = album_danceability), color = "blue") +
-#   geom_line(aes(y = album_speechiness), color = "green") +
-#   geom_line(aes(y = album_valence), color = "purple") +
-#   geom_smooth(aes(y = album_energy), method = "lm", se = FALSE, color = "pink") +
-#   geom_smooth(aes(y = album_danceability), method = "lm", se = FALSE, color = "pink") +
-#   geom_smooth(aes(y = album_speechiness), method = "lm", se = FALSE, color = "pink") +
-#   geom_smooth(aes(y = album_valence), method = "lm", se = FALSE, color = "pink")
-```
-
 ```{r fig.height = 8, fig.width = 11}
-#| label: highlight_energy_plot
+#| label: plot2a_valence_energy_change_over_time
 
 ggplot(taylor_albums_plot2a, aes(x = album_release)) +
   geom_line(aes(y = attribute_value), color = "#4D4D4D", size = 2) +
