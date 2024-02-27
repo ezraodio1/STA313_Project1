@@ -43,12 +43,14 @@ taylor_albums_plot2a <- taylor_albums_plot2a |>
   ) |>
   mutate(
     song_attribute = fct_recode(song_attribute, "energy" = "album_energy", "valence" = "album_valence"),
-    album_name = factor(album_name, levels = c("Midnights",  "evermore", "folklore",
-                                                    "Lover", "reputation", "1989", 
-                                                    "Red", "Speak Now", 
-                                                    "Fearless (Taylor's Version)", 
-                                                    "Fearless", "Taylor Swift", "The Taylor Swift Holiday Collection",
-                                                    "Red (Taylor's Version)"))
+    album_name = factor(album_name, 
+                        levels = c("Midnights",  "evermore", "folklore",
+                                   "Lover", "reputation", "1989", 
+                                   "Red", "Speak Now", 
+                                   "Fearless (Taylor's Version)", 
+                                   "Fearless", "Taylor Swift", 
+                                   "The Taylor Swift Holiday Collection",
+                                   "Red (Taylor's Version)"))
   )
 
 ```
@@ -56,19 +58,19 @@ taylor_albums_plot2a <- taylor_albums_plot2a |>
 ```{r}
 #| label: experimental_plot
 
-ggplot(taylor_albums_plot2a, aes(x = album_release)) +
-  geom_point(aes(y = album_energy), color = "red") +
-  geom_point(aes(y = album_danceability), color = "blue") +
-  geom_point(aes(y = album_speechiness), color = "green") +
-  geom_point(aes(y = album_valence), color = "purple") +
-  geom_line(aes(y = album_energy), color = "red") +
-  geom_line(aes(y = album_danceability), color = "blue") +
-  geom_line(aes(y = album_speechiness), color = "green") +
-  geom_line(aes(y = album_valence), color = "purple") +
-  geom_smooth(aes(y = album_energy), method = "lm", se = FALSE, color = "pink") +
-  geom_smooth(aes(y = album_danceability), method = "lm", se = FALSE, color = "pink") +
-  geom_smooth(aes(y = album_speechiness), method = "lm", se = FALSE, color = "pink") +
-  geom_smooth(aes(y = album_valence), method = "lm", se = FALSE, color = "pink")
+# ggplot(taylor_albums_plot2a, aes(x = album_release)) +
+#   geom_point(aes(y = album_energy), color = "red") +
+#   geom_point(aes(y = album_danceability), color = "blue") +
+#   geom_point(aes(y = album_speechiness), color = "green") +
+#   geom_point(aes(y = album_valence), color = "purple") +
+#   geom_line(aes(y = album_energy), color = "red") +
+#   geom_line(aes(y = album_danceability), color = "blue") +
+#   geom_line(aes(y = album_speechiness), color = "green") +
+#   geom_line(aes(y = album_valence), color = "purple") +
+#   geom_smooth(aes(y = album_energy), method = "lm", se = FALSE, color = "pink") +
+#   geom_smooth(aes(y = album_danceability), method = "lm", se = FALSE, color = "pink") +
+#   geom_smooth(aes(y = album_speechiness), method = "lm", se = FALSE, color = "pink") +
+#   geom_smooth(aes(y = album_valence), method = "lm", se = FALSE, color = "pink")
 ```
 
 ```{r fig.height = 8, fig.width = 11}
@@ -101,8 +103,9 @@ ggplot(taylor_albums_plot2a, aes(x = album_release)) +
     axis.title.x = element_text(vjust = -1, size = 12),
     strip.text = element_text(size = 12)
   ) +
-  facet_wrap(~song_attribute, ncol = 1, labeller = labeller(song_attribute = c(energy = "Attribute: Energy", 
-                                                                               valence = "Attribute: Valence")))
+  facet_wrap(~song_attribute, ncol = 1, labeller = 
+               labeller(song_attribute = c(energy = "Attribute: Energy", valence = "Attribute: Valence"))
+  )
 
 ```
 
