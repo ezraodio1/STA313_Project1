@@ -83,6 +83,11 @@ taylor_albums_data
 #        fill = "Album",
 #        caption = "Source: Tidy Tuesday")
 
+taylor_albums_data <- taylor_albums_data |>
+  mutate(album_name = factor(album_name, levels = c("Midnights",  "evermore", "folklore", "Lover", 
+                                                    "reputation", "1989", "Red", "Speak Now", 
+                                                    "Fearless (Taylor's Version)", "Fearless", "Taylor Swift")))
+
 ggplot(taylor_albums_data, aes(x = energy, y = album_name, fill = song_type)) +
   geom_col(position = "dodge") +
   scale_fill_manual(values = c("#982F47", "#4497BA")) +
