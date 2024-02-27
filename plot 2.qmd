@@ -10,6 +10,7 @@ editor: visual
 #| message: false
 
 library(tidyverse)
+library(ggrepel)
 ```
 
 ```{r}
@@ -60,20 +61,20 @@ ggplot(taylor_albums_plot2a, aes(x = album_release)) +
 #| label: highlight_energy_plot
 
 ggplot(taylor_albums_plot2a, aes(x = album_release)) +
-  geom_point(aes(y = album_danceability), color = "gray") +
-  geom_point(aes(y = album_speechiness), color = "gray") +
-  geom_point(aes(y = album_valence), color = "gray") +
-  geom_line(aes(y = album_danceability), color = "gray") +
-  geom_line(aes(y = album_speechiness), color = "gray") +
-  geom_line(aes(y = album_valence), color = "gray") +
-  geom_point(aes(y = album_energy), color = "red", size = 3) +
-  geom_line(aes(y = album_energy), color = "red", size = 1.4) +
-  geom_smooth(aes(y = album_energy), method = "lm", se = FALSE, color = "pink", alpha = 0.5) +
-  geom_text(aes(y = album_energy, label = album_name), color = "blue", size = 3, vjust = -1) +
+  #geom_point(aes(y = album_danceability), color = "gray", shape = 18) +
+  #geom_point(aes(y = album_speechiness), color = "gray", shape = 18) +
+  #geom_point(aes(y = album_valence), color = "gray", shape = 18) +
+  #geom_line(aes(y = album_danceability), color = "gray", size = 1) +
+  #geom_line(aes(y = album_speechiness), color = "gray", size = 1) +
+  #geom_line(aes(y = album_valence), color = "gray", size = 1) +
+  geom_point(aes(y = album_energy), color = "#4D4D4D", size = 5, shape = 18) +
+  geom_line(aes(y = album_energy), color = "#4D4D4D", size = 2) +
+  geom_smooth(aes(y = album_energy), method = "lm", se = FALSE, color = "#DEA9C9") +
+  geom_label_repel(aes(y = album_energy, label = album_name), color = "#4D4D4D", size = 3) +
   scale_y_continuous(breaks = seq(0.0, 1.0, by = 0.1), limits = c(0, 1)) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   labs(
-    title = "Change over time of energy in Taylor Swift albums",
+    title = "Energy of Taylor Swift albums over time",
     x = "Album Release Date"
   ) +
   theme_minimal() +
