@@ -83,8 +83,17 @@ taylor_albums_data
 #        fill = "Album",
 #        caption = "Source: Tidy Tuesday")
 
-ggplot(taylor_albums_data, aes(x = album_name, y = energy, fill = song_type)) +
-  geom_col(position = "dodge")
+ggplot(taylor_albums_data, aes(x = energy, y = album_name, fill = song_type)) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c("#982F47", "#4497BA")) +
+  theme_bw() +
+  labs(
+    title = "Energy Values of Taylor Swift Albums",
+    x = "Albums",
+    y = "Energy",
+    fill = "Energy Type",
+    caption = "Source: Tidy Tuesday Data"
+  )
 ```
 
 ```{r}
@@ -110,7 +119,6 @@ ggplot(taylor_albums_data, aes(x = album_name)) +
 
 ```{r}
 #| label: ezra-chunk
-
 
 
 ```
