@@ -119,7 +119,7 @@ ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) +
   geom_col(position = "dodge") + 
   geom_text(aes(label = score), position = position_dodge(width = 0.9), vjust = -0.5, size = 3 ) +
   facet_wrap(~album)+ 
-  scale_fill_manual(values = c( "#4D4D4D", "#DEA9C9")) +
+  scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
   theme_bw() +
   labs(
     title = "Original versus Taylor's Score Comparison",
@@ -131,5 +131,3 @@ ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) +
 
 
 ```
-
-
