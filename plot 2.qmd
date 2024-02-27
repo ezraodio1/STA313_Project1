@@ -79,7 +79,7 @@ taylor_albums_plot2a <- taylor_albums_plot2a |>
 ggplot(taylor_albums_plot2a, aes(x = album_release)) +
   geom_line(aes(y = attribute_value), color = "#4D4D4D", size = 2) +
   geom_point(aes(y = attribute_value, color = album_name), size = 7, shape = 18) +
-  geom_smooth(aes(y = attribute_value), method = "lm", se = FALSE, color = "#ff00ff60", size =2, linetype = "dashed") +
+  geom_smooth(aes(y = attribute_value), method = "lm", se = FALSE, color = "#E3183790", size =2, linetype = "dashed") +
   geom_label_repel(aes(y = attribute_value, label = album_name, fill = album_name), color = "white", size = 3, 
                    nudge_y = 0.1, nudge_x = 100) +
   scale_y_continuous(breaks = seq(0.0, 1.0, by = 0.1), limits = c(0, 1)) +
