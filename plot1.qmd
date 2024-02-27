@@ -55,7 +55,7 @@ taylor_albums_data <- taylor_albums_data |>
     values_to = "energy"
   ) |>
   mutate(
-    song_type = fct_recode(song_type, "album" = "album_energy", "single" = "singles_energy")
+    song_type = fct_recode(song_type, "Album" = "album_energy", "Single" = "singles_energy")
   )
 
 taylor_albums_data
@@ -110,7 +110,8 @@ ggplot(taylor_albums_data, aes(x = album_name, y = energy, fill = album_name)) +
   theme_bw() +
   theme(axis.text.x = element_blank()) +
   labs(
-    title = "Energy Values of Taylor Swift Albums",
+    title = "Energy Values of Taylor Swift Albums Versus Single Releases",
+    subtitle = "Colored by Album",
     x = "Albums",
     y = "Energy",
     fill = "Album",
