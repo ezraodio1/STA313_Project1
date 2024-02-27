@@ -10,6 +10,8 @@ editor: visual
 #| message: false
 
 library(tidyverse)
+library(ggridges)
+
 ```
 
 ```{r}
@@ -84,33 +86,22 @@ taylor_albums_data
 #        caption = "Source: Tidy Tuesday")
 
 taylor_albums_data <- taylor_albums_data |>
-  mutate(album_name = factor(album_name, levels = c("Midnights",  "evermore", "folklore",
-                                                    "Lover", "reputation", "1989", 
-                                                    "Red", "Speak Now", 
-                                                    "Fearless (Taylor's Version)", 
-                                                    "Fearless", "Taylor Swift")))
+  mutate(album_name = factor(album_name, levels = c("Taylor Swift", "Fearless",  "Fearless (Taylor's Version)",
+                                                    "Speak Now", "Red", "1989", "reputation",
+                                                    "Lover", "folklore", "evermore", "Midnights")))
 
-# ggplot(taylor_albums_data, aes(x = energy, y = album_name, fill = song_type)) +
-#   geom_col(position = "dodge") +
-#   scale_fill_manual(values = c("#982F47", "#4497BA")) +
-#   theme_bw() +
-#   labs(
-#     title = "Energy Values of Taylor Swift Albums",
-#     x = "Albums",
-#     y = "Energy",
-#     fill = "Energy Type",
-#     caption = "Source: Tidy Tuesday Data"
-#   )
+
 
 ggplot(taylor_albums_data, aes(x = album_name, y = energy, fill = album_name)) +
   geom_col(position = "dodge") +
   geom_text(aes(label = round(energy, 2)), position = position_dodge(width = 0.9), vjust = -0.5, size = 2) +
   facet_wrap(~song_type) +
-  scale_fill_manual(values = c("#A26A5B", "#ACA38D", "#4D4D4D", "#DEA9C9", 
-                               "#0A0A0A", "#7B96AF", "#982F47", "#704073", 
-                               "#5F4A30", "#BD9365", "#4497BA")) +
+  scale_fill_manual(values = c("#4497BA", "#BD9365", "#5F4A30", "#704073",
+                               "#982F47", "#7B96AF", "#0A0A0A", "#DEA9C9",
+                               "#4D4D4D", "#ACA38D", "#A26A5B")) +
   theme_bw() +
-  theme(axis.text.x = element_blank()) +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
   labs(
     title = "Energy Values of Taylor Swift Albums Versus Single Releases",
     subtitle = "Colored by Album",
@@ -119,6 +110,8 @@ ggplot(taylor_albums_data, aes(x = album_name, y = energy, fill = album_name)) +
     fill = "Album",
     caption = "Source: Tidy Tuesday Data"
   )
+
+#make sure that the values are readable on a screen
 ```
 
 ```{r}
@@ -126,25 +119,23 @@ ggplot(taylor_albums_data, aes(x = album_name, y = energy, fill = album_name)) +
 #| message: false
 
 taylor_songs_tempo <- taylor_all_songs |>
-  drop_na(tempo) |>
-  filter(is_single == TRUE)
+  drop_na(tempo)
   
+#print(taylor_songs_tempo)
+#print(sum(taylor_songs_tempo$is_single == TRUE))
+#print(sum(taylor_songs_tempo$is_single == FALSE))
 
-ggplot(taylor_albums_data, aes(x = song_type, y = energy, color = song_type)) +
-  geom_boxplot(show.legend = FALSE) +
-  scale_color_manual(values = c("#4D4D4D", "#DEA9C9")) +
+
+ggplot(taylor_songs_tempo, aes(x = tempo, y = is_single, fill = is_single)) +
+  geom_density_ridges(show.legend = FALSE) +
+  scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
+  scale_y_discrete(labels = c("Album", "Single")) +
   theme_bw() +
   labs(
     title = "Tempo Distribution of Taylor Swift Songs",
-    subtitle = "Album only songs versus single releases",
-    x = "Release Type",
-    y = "Tempo",
+    subtitle = "191 Album only songs versus 47 single releases",
+    x = "Tempo",
+    y = "Release Type",
     caption = "Source: Tidy Tuesday Data"
   )
-```
-
-```{r}
-#| label: ezra-chunk
-
-
 ```
