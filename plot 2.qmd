@@ -93,7 +93,7 @@ original_and_rereleased_albums <- c("Red", "Red (Taylor's Version)", "Fearless",
 # Creating a new data frame with only the albums that have been re-released, their original, and the scores
 plot2b_data <- subset(taylor_albums, album_name %in% original_and_rereleased_albums) |>
   mutate(user_score = user_score*10, 
-         taylor_owned = ifelse(grepl("Taylor's Version", album_name), TRUE, FALSE), 
+         taylor_owned = ifelse(grepl("Taylor's Version", album_name), "Taylor's Version", "Scooter Owned"), 
          album = case_when(grepl("Red", album_name) ~ "Red", 
                            grepl("Fearless", album_name) ~ "Fearless", 
                            TRUE ~ "" )) |>
@@ -118,7 +118,17 @@ plot2b_data
 
 ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) + 
   geom_col(position = "dodge") + 
-  facet_wrap(~album)
+  geom_text(aes(label = score), position = position_dodge(width = 0.9), vjust = -0.5, size = 3 ) +
+  facet_wrap(~album)+ 
+  scale_fill_manual(values = c( "#4D4D4D", "#DEA9C9")) +
+  theme_bw() +
+  labs(
+    title = "Original versus Taylor's Score Comparison",
+    x = "Type of Score",
+    y = "Score",
+    fill = "Taylor's Version?",
+    caption = "Source: Tidy Tuesday Data"
+  )
 
 
 
