@@ -84,19 +84,36 @@ taylor_albums_data
 #        caption = "Source: Tidy Tuesday")
 
 taylor_albums_data <- taylor_albums_data |>
-  mutate(album_name = factor(album_name, levels = c("Midnights",  "evermore", "folklore", "Lover", 
-                                                    "reputation", "1989", "Red", "Speak Now", 
+  mutate(album_name = factor(album_name, levels = c("Midnights",  "evermore", "folklore", "Lover",
+                                                    "reputation", "1989", "Red", "Speak Now",
                                                     "Fearless (Taylor's Version)", "Fearless", "Taylor Swift")))
 
-ggplot(taylor_albums_data, aes(x = energy, y = album_name, fill = song_type)) +
+# ggplot(taylor_albums_data, aes(x = energy, y = album_name, fill = song_type)) +
+#   geom_col(position = "dodge") +
+#   scale_fill_manual(values = c("#982F47", "#4497BA")) +
+#   theme_bw() +
+#   labs(
+#     title = "Energy Values of Taylor Swift Albums",
+#     x = "Albums",
+#     y = "Energy",
+#     fill = "Energy Type",
+#     caption = "Source: Tidy Tuesday Data"
+#   )
+
+ggplot(taylor_albums_data, aes(x = album_name, y = energy, fill = album_name)) +
   geom_col(position = "dodge") +
-  scale_fill_manual(values = c("#982F47", "#4497BA")) +
+  geom_text(aes(label = round(energy, 2)), position = position_dodge(width = 0.9), vjust = -0.5, size = 2) +
+  facet_wrap(~song_type) +
+  scale_fill_manual(values = c("#A26A5B", "#ACA38D", "#4D4D4D", "#DEA9C9", 
+                               "#0A0A0A", "#7B96AF", "#982F47", "#704073", 
+                               "#5F4A30", "#BD9365", "#4497BA")) +
   theme_bw() +
+  theme(axis.text.x = element_blank()) +
   labs(
     title = "Energy Values of Taylor Swift Albums",
     x = "Albums",
     y = "Energy",
-    fill = "Energy Type",
+    fill = "Album",
     caption = "Source: Tidy Tuesday Data"
   )
 ```
@@ -105,9 +122,8 @@ ggplot(taylor_albums_data, aes(x = energy, y = album_name, fill = song_type)) +
 #| label: create-plot2
 #| message: false
 
-ggplot(taylor_albums_data, aes(x = album_name)) +
-  geom_bar(aes(y = album_energy, fill = "Album Energy"), stat = "identity", position = "dodge", width = 0.7) +
-  geom_bar(aes(y = singles_energy, fill = "Single Energy"), stat = "identity", position = "dodge", width = 0.7) +
+ggplot(taylor_albums_data, aes(x = album_name, y = energy, fill = album_name)) +
+  geom_point() +
   scale_fill_manual(values = c("#7B96AF", "#ACA38D", "#BD9365", "#5F4A30", 
                                "#4D4D4D", "#DEA9C9", "#A26A5B", "#982F47", 
                                "#0A0A0A", "#704073", "#4497BA")) +
