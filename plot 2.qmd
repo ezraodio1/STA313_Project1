@@ -87,10 +87,10 @@ ggplot(taylor_albums_plot2a, aes(x = album_release)) +
 ```{r}
 #| label: data-wrangle-plot2b
 
-#list of original album names and the names of their re-releases
+#Albums we want to consider for plot 2b (only albums in Tidy Data with original & re-released)
 original_and_rereleased_albums <- c("Red", "Red (Taylor's Version)", "Fearless", "Fearless (Taylor's Version)")
 
-# Creating a new data frame with only the albums that have been re-released, their original, and the scores
+#Wrangling the data for plot 2b
 plot2b_data <- subset(taylor_albums, album_name %in% original_and_rereleased_albums) |>
   mutate(user_score = user_score*10, 
          taylor_owned = ifelse(grepl("Taylor's Version", album_name), "Taylor's Version", "Scooter Owned"), 
@@ -99,6 +99,7 @@ plot2b_data <- subset(taylor_albums, album_name %in% original_and_rereleased_alb
                            TRUE ~ "" )) |>
   select(album, metacritic_score, user_score, taylor_owned) 
 
+#Pivoting longer to be able to put score on y-axis for plot 2b
 plot2b_data <- plot2b_data |>
   pivot_longer(
     cols = c("metacritic_score", "user_score"), 
@@ -108,9 +109,7 @@ plot2b_data <- plot2b_data |>
     score_type = fct_recode(score_type, "metacritic" = "metacritic_score", "user" = "user_score")
   )
 
-plot2b_data
 
-#learned grepl from chatgpt, because I was trying use contains
 ```
 
 ```{r}
@@ -129,7 +128,6 @@ ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) +
     fill = "Taylor's Version?",
     caption = "Source: Tidy Tuesday Data"
   )
-
 
 
 ```
