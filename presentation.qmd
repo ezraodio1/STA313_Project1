@@ -1,5 +1,6 @@
 ---
-title: "Taylor Swift (Soon-to-be-Kelce)"
+title: "Taylor Swift 
+(Soon-to-be-Kelce)"
 subtitle: "STA/ISS 313 - Spring 2024 - Project 1"
 author: "Team Robots 🤖"
 title-slide-attributes:
@@ -89,15 +90,25 @@ plot1a_data <- plot1a_data |>
 
 ## Our Data
 
--   Idk I think Taylor Swift is kinda lame and boring
+-   Taylor Swift R Package
 
--   Testing I guess
+    -   Data from Genius and Spotify API
+
+    -   All Songs, Album Songs, Albums
+
+-   Each individual song is assigned metrics
+
+    -   Energy, valence, danceability, acousticness...
+
+-   Includes the Taylor's Version albums
 
 # Q1: How do Taylor Swift's single releases differ from the songs on the full albums?
 
 ## Energy on Singles and Albums
 
 ```{r}
+
+#| fig-asp: | 0.618
 
 #| fig-alt: |
 #|   This figure is a bar chart titled "Energy Values of Taylor 
@@ -198,6 +209,8 @@ plot2a_data <- plot2a_data |>
                                    "Red (Taylor's Version)"))
   )
 
+#| fig-asp: | 0.618
+
 #| fig-alt: |
 #|   This figure is a point and line plot titled "Taylor Swift album attributes over time"
 #|   that displays the average energy and valence values of each Taylor swift album along 
@@ -244,7 +257,7 @@ ggplot(plot2a_data, aes(x = album_release)) +
   )
 ```
 
-## Original Versus Taylor's Version
+## Taylor's Version Supremacy
 
 ```{r}
 #| label: question2b-wrangle-and-plot
@@ -298,6 +311,10 @@ ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) +
 
 ## Our Takeaways
 
--   Idk I think Taylor Swift is kinda lame and boring
+-   Taylor Swift is incredibly popular for her ability to cater to many audiences
 
--   Testing I guess
+-   More energy on single releases, yet slower tempo
+
+-   Despite changing styles of music over time, song attributes only vary slightly
+
+-   Taylor's Version albums are much more popular than the studio owned versions
