@@ -161,6 +161,7 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
   geom_density_ridges(show.legend = FALSE) +
   scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
   scale_y_discrete(labels = c("Album", "Single")) +
+  expand_limits(y = 3.9) +
   theme_bw() +
   labs(
     title = "Tempo Distribution of Taylor Swift Songs",
@@ -169,6 +170,9 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
     y = "Release Type",
     caption = "Source: Tidy Tuesday Data"
   )
+
+#citation: How to expand the height of the plot, found "expand_limits"
+#https://stackoverflow.com/questions/50213446/how-to-prevent-a-plot-cut-off
 ```
 
 # Q2: How have Taylor Swift’s songs changed over time?
@@ -290,7 +294,7 @@ plot2b_data <- plot2b_data |>
 #the plot
 ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) + 
   geom_col(position = "dodge") + 
-  geom_text(aes(label = score), position = position_dodge(width = 0.9), vjust = -0.5, size = 3 ) +
+  geom_text(aes(label = score), position = position_dodge(width = 0.9), vjust = -0.1, size = 3 ) +
   facet_wrap(~album)+ 
   scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
   theme_bw() +
