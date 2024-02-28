@@ -148,9 +148,28 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
   ) 
 ```
 
+```{r}
+#| label: data_for_writeup
+
+plot1a_data_for_writeup <- plot1a_data |> 
+  group_by(album_name) |>
+  summarise(album_energy = energy[song_type == "Album"],
+            single_energy = energy[song_type == "Single"]) |>
+  filter(album_energy > single_energy)
+
+overall_averages <- plot1a_data |>
+  group_by(song_type) |>
+  summarise(average_energy = mean(energy))
+
+average_energy_album <- overall_averages$average_energy[overall_averages$song_type == "Album"]
+average_energy_single <- overall_averages$average_energy[overall_averages$song_type == "Single"]
+```
+
 ### Discussion
 
-The faceted bar chart illustrates that energy scores of Taylor Swift's
+The faceted bar chart illustrates that average energy scores of Taylor Swift's singles on her albums are generally higher than the average energy scores of album-only songs. In fact, out of the `{r} nrow(plot1a_data)/2` albums analyzed, only `{r} nrow(plot1a_data_for_writeup)` albums have a lower average singles energy than average album-only-songs energy. Those albums are `{r} paste(plot1a_data_for_writeup$album_name, collapse = " and ")`. In fact, the difference between the average energy of singles and album-only songs was `{r} round(average_energy_single - average_energy_album, digits = 2)`, meaning that the average energy of singles was `{r} round(100*(average_energy_single - average_energy_album)/average_energy_album, digits = 2)` percent higher than the average energy of album-only songs.
+
+The
 
 plot 2 blah blah, it is evident that the curves for single released songs and album released songs share a general shape.
 
