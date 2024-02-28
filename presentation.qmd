@@ -99,9 +99,8 @@ plot1a_data <- plot1a_data |>
 
 -   Each individual song is assigned metrics
 
-    -   Energy, valence, danceability, acousticness...
-
--   Includes the Taylor's Version albums
+    -   Energy is a measure from 0.0 to 1.0, represents a perceptual measure of intensity and activity
+    -   A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive
 
 # Q1: How do Taylor Swift's single releases differ from the songs on the full albums?
 
@@ -166,7 +165,7 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
   labs(
     title = "Tempo Distribution of Taylor Swift Songs",
     subtitle = "191 songs appearing only on an album versus 47 single releases",
-    x = "Tempo",
+    x = "Tempo (BPM)",
     y = "Release Type",
     caption = "Source: Tidy Tuesday Data"
   )
@@ -212,16 +211,18 @@ plot2a_data <- plot2a_data |>
     names_to = "song_attribute",
     values_to = "attribute_value"
   ) |>
+  mutate(album_name = ifelse(album_name == "Fearless (Taylor's Version)", "Fearless (TV)", album_name)) |>
+  mutate(album_name = ifelse(album_name == "Red (Taylor's Version)", "Red (TV)", album_name)) |>
   mutate(
     song_attribute = fct_recode(song_attribute, "energy" = "album_energy", "valence" = "album_valence"),
     album_name = factor(album_name, 
                         levels = c("Midnights",  "evermore", "folklore",
                                    "Lover", "reputation", "1989", 
                                    "Red", "Speak Now", 
-                                   "Fearless (Taylor's Version)", 
+                                   "Fearless (TV)", 
                                    "Fearless", "Taylor Swift", 
                                    "The Taylor Swift Holiday Collection",
-                                   "Red (Taylor's Version)"))
+                                   "Red (TV)"))
   )
 
 #the plot
@@ -300,7 +301,7 @@ ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) +
   theme_bw() +
   labs(
     title = "Original versus Taylor's Score Comparison",
-    x = "Type of Score",
+    x = "Score Type",
     y = "Score",
     fill = "Taylor's Version?",
     caption = "Source: Tidy Tuesday Data"
@@ -311,7 +312,7 @@ ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) +
 
 ## Our Takeaways
 
--   Taylor Swift is incredibly popular for her ability to cater to many audiences
+-   Taylor Swift has found a Timeless 💜 formula thats allowed her to be incredibly popular over the entire course of her career
 
 -   More energy on single releases, yet slower tempo
 
