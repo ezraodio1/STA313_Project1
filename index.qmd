@@ -32,11 +32,11 @@ For the second plot, we use a Ridgeline plot (geom_density_ridges) to compare th
 
 ### Analysis
 
-Load in Packages and Data
-
 ```{r}
 #| label: question1-load-pkgs-and-data
 #| echo: false
+#| warning: false
+#| message: false
 
 library(tidyverse)
 library(ggridges)
@@ -47,11 +47,11 @@ taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALS
 
 ```
 
-Plot 1 (wrangle and plot)
-
 ```{r}
 #| label: question1a-wrangle-and-plot
 #| echo: false
+#| warning: false
+#| message: false
 #| fig-alt: |
 #|   This figure is a bar chart titled "Energy Values of Taylor 
 #|   Swift Albums Versus Single Releases" that displays the energy of all
@@ -109,10 +109,10 @@ ggplot(plot1a_data, aes(x = album_name, y = energy, fill = album_name)) +
                                "#4D4D4D", "#ACA38D", "#A26A5B")) +
   theme_bw() +
   theme(axis.text.x = element_blank(),
-        axis.ticks.x = element_blank()) +
+        axis.ticks.x = element_blank(),
+                plot.title = element_text(size = 15, face = "bold", hjust = 0.5)) +
   labs(
     title = "Energy Values of Taylor Swift Albums Versus Single Releases",
-    subtitle = "Colored by Album",
     x = "Albums",
     y = "Energy",
     fill = "Album",
@@ -121,11 +121,11 @@ ggplot(plot1a_data, aes(x = album_name, y = energy, fill = album_name)) +
 
 ```
 
-Plot 2 (wrangle and plot)
-
 ```{r}
 #| label: question1b-wrangle-and-plot
 #| echo: false
+#| warning: false
+#| message: false
 #| fig-alt: |
 #|   This figure is a density ridge plot titled "Tempo Distribution of Taylor Swift Songs"
 #|   that dcompares the tempo of 47 single released
@@ -146,6 +146,9 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
   scale_y_discrete(labels = c("Album", "Single")) +
   expand_limits(y = 3.9) +
   theme_bw() +
+   theme(
+        plot.title = element_text(size = 15, face = "bold", hjust = 0.5), 
+        plot.subtitle = element_text(hjust = 0.5))+
   labs(
     title = "Tempo Distribution of Taylor Swift Songs",
     subtitle = "191 songs appearing only on an album versus 47 single releases",
@@ -158,6 +161,8 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
 ```{r}
 #| label: data_for_writeup
 #| echo: false
+#| warning: false
+#| message: false
 
 plot1a_data_for_writeup <- plot1a_data |> 
   group_by(album_name) |>
@@ -199,11 +204,11 @@ For plot 2, we used a bar graph (geom_col). In this plot, we wanted to address t
 
 ### Analysis
 
-Load in Packages and Data
-
 ```{r}
 #| label: question2-load-pkgs-and-data
 #| echo: false
+#| warning: false
+#| message: false
 
 library(tidyverse)
 library(ggrepel)
@@ -212,11 +217,11 @@ taylor_all_songs <- readr::read_csv('data/taylor_all_songs.csv', show_col_types 
 taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALSE)
 ```
 
-Plot 1 (wrangle and plot)
-
 ```{r}
 #| label: question2a-wrangle-and-plot
 #| echo: false
+#| warning: false
+#| message: false
 #| fig-alt: |
 #|   This figure is a point and line plot titled "Taylor Swift album attributes over time"
 #|   that displays the average energy and valence values of each Taylor swift album along 
@@ -298,11 +303,11 @@ ggplot(plot2a_data, aes(x = album_release)) +
 
 ```
 
-Plot 2 (wrangle and plot)
-
 ```{r}
 #| label: question2b-wrangle-and-plot
 #| echo: false
+#| warning: false
+#| message: false
 #| fig-alt: |
 #|   This figure is a bar plot titled "Original versus Taylor's Score Comparison"
 #|   that displays 8 total bars, each representing a different score value. On the 
@@ -339,6 +344,8 @@ ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) +
   facet_wrap(~album)+ 
   scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
   theme_bw() +
+  theme(
+        plot.title = element_text(size = 15, face = "bold", hjust = 0.5))+
   labs(
     title = "Original versus Taylor's Score Comparison",
     x = "Score Type",
@@ -353,6 +360,8 @@ ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) +
 ```{r}
 #| label: data-frames-for-inline-code
 #| echo: false
+#| warning: false
+#| message: false
 
 average_meta_scores <- plot2b_data %>%
   filter(score_type == "metacritic") %>%
