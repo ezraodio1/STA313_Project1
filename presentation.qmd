@@ -209,7 +209,8 @@ plot2a_data <- plot2a_data |>
                                    "Red (Taylor's Version)"))
   )
 
-#| fig-asp: | 0.618
+#| fig-asp: 0.618
+#| fig-width: 10
 
 #| fig-alt: |
 #|   This figure is a point and line plot titled "Taylor Swift album attributes over time"
@@ -239,7 +240,6 @@ ggplot(plot2a_data, aes(x = album_release)) +
                                "#5F4A30", "#BD9365", "#4497BA", "#BA372E", "#903F31")
   ) +
   labs(
-    title = "Taylor Swift album attributes over time",
     x = "Album Release Date",
     caption = "Source: Tidy Tuesday Data"
   ) +
