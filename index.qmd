@@ -50,6 +50,15 @@ Plot 1 (wrangle and plot)
 
 ```{r}
 #| label: question1a-wrangle-and-plot
+#| fig-alt: |
+#|   This figure is a bar chart titled "Energy Values of Taylor 
+#|   Swift Albums Versus Single Releases" that displays the energy of all
+#|   of Taylor Swifts songs from each of her albums, compared to the singles
+#|   off of each of those albums. Each bar represents the average energy score
+#|   of one album, listed in chronoligcal order. Each album is colored to
+#|   represent the main color of the album. The plot shows that the single
+#|   release songs generally tend to have a higher energy score than the 
+#|   overall energy score of the album.
 
 taylor_all_songs_including_singles <- taylor_all_songs |>
   drop_na(album_name) |>
@@ -82,19 +91,12 @@ plot1a_data <- plot1a_data |>
   )
 
 plot1a_data <- plot1a_data |>
-  mutate(album_name = factor(album_name, levels = c("Taylor Swift", "Fearless",  "Fearless (Taylor's Version)",
+  mutate(album_name = ifelse(album_name == "Fearless (Taylor's Version)", "Fearless (TV)", album_name)) |>
+  mutate(album_name = factor(album_name, levels = c("Taylor Swift", "Fearless", 
+                                                    "Fearless (TV)",
                                                     "Speak Now", "Red", "1989", "reputation",
                                                     "Lover", "folklore", "evermore", "Midnights")))
 
-#| fig-alt: |
-#|   This figure is a bar chart titled "Energy Values of Taylor 
-#|   Swift Albums Versus Single Releases" that displays the energy of all
-#|   of Taylor Swifts songs from each of her albums, compared to the singles
-#|   off of each of those albums. Each bar represents the average energy score
-#|   of one album, listed in chronoligcal order. Each album is colored to
-#|   represent the main color of the album. The plot shows that the single
-#|   release songs generally tend to have a higher energy score than the 
-#|   overall energy score of the album.
 
 ggplot(plot1a_data, aes(x = album_name, y = energy, fill = album_name)) +
   geom_col(position = "dodge") +
@@ -121,10 +123,6 @@ Plot 2 (wrangle and plot)
 
 ```{r}
 #| label: question1b-wrangle-and-plot
-
-plot1b_data <- taylor_all_songs_including_singles |>
-  drop_na(tempo)
-
 #| fig-alt: |
 #|   This figure is a density ridge plot titled "Tempo Distribution of Taylor Swift Songs"
 #|   that dcompares the tempo of 47 single released
@@ -134,10 +132,16 @@ plot1b_data <- taylor_all_songs_including_singles |>
 #|   The album released songs also have songs with over a 200 tempo, while the
 #|   single realeased songs do not.
 
+plot1b_data <- taylor_all_songs_including_singles |>
+  drop_na(tempo)
+
+
+
 ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
   geom_density_ridges(show.legend = FALSE) +
   scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
   scale_y_discrete(labels = c("Album", "Single")) +
+  expand_limits(y = 3.9) +
   theme_bw() +
   labs(
     title = "Tempo Distribution of Taylor Swift Songs",
@@ -163,15 +167,17 @@ overall_averages <- plot1a_data |>
 
 average_energy_album <- overall_averages$average_energy[overall_averages$song_type == "Album"]
 average_energy_single <- overall_averages$average_energy[overall_averages$song_type == "Single"]
+
+tempo_averages <- plot1b_data |>
+  group_by(is_single) |>
+  summarise(average_tempo = mean(tempo))
 ```
 
 ### Discussion
 
 The faceted bar chart illustrates that average energy scores of Taylor Swift's singles on her albums are generally higher than the average energy scores of album-only songs. In fact, out of the `{r} nrow(plot1a_data)/2` albums analyzed, only `{r} nrow(plot1a_data_for_writeup)` albums have a lower average singles energy than average album-only-songs energy. Those albums are `{r} paste(plot1a_data_for_writeup$album_name, collapse = " and ")`. In fact, the difference between the average energy of singles and album-only songs was `{r} round(average_energy_single - average_energy_album, digits = 2)`, meaning that the average energy of singles was `{r} round(100*(average_energy_single - average_energy_album)/average_energy_album, digits = 2)` percent higher than the average energy of album-only songs.
 
-The
-
-plot 2 blah blah, it is evident that the curves for single released songs and album released songs share a general shape.
+The density ridgeline plot illustrates that the tempo of Taylor Swift's singles seem to be lower than the tempos of her album-only songs. This can be inferred from the fact that the plot for singles sits further to the left than the plot for the album-only songs. The plot for the singles is right-skewed, while the plot for the album-only songs is roughly symmetric. These observations made from looking at the plots are backed up by the data as well, as the average tempo for singles is `{r} round(tempo_averages$average_tempo[tempo_averages$is_single == TRUE], digits = 2)` and the average tempo for album-only songs is `{r} round(tempo_averages$average_tempo[tempo_averages$is_single == FALSE], digits = 2)`.
 
 ## **Question 2**: How have Taylor Swift's songs changed over time?
 
@@ -205,6 +211,16 @@ Plot 1 (wrangle and plot)
 
 ```{r}
 #| label: question2a-wrangle-and-plot
+#| fig-alt: |
+#|   This figure is a point and line plot titled "Taylor Swift album attributes over time"
+#|   that displays the average energy and valence values of each Taylor swift album along 
+#|   the date at which the album was released. Each album is represented by a point, 
+#|   colored to match the album cover, and labeled witht eh album name. Also, each point
+#|   is connected by a line to show the change from one album to the next in terms of 
+#|   energy/valence respectively. Under each set of albums is a dotted red line that displays
+#|   the average change over time among each of these values. The red dotted line along
+#|   with the rest of the plot show that there is a slight decrease, but seemingly 
+#|   insignificant, decrease in both energy and valence scores of her albums over time.
 
 # the wrangle
 taylor_albums_stats <- taylor_all_songs |>
@@ -235,16 +251,7 @@ plot2a_data <- plot2a_data |>
                                    "Red (Taylor's Version)"))
   )
 
-#| fig-alt: |
-#|   This figure is a point and line plot titled "Taylor Swift album attributes over time"
-#|   that displays the average energy and valence values of each Taylor swift album along 
-#|   the date at which the album was released. Each album is represented by a point, 
-#|   colored to match the album cover, and labeled witht eh album name. Also, each point
-#|   is connected by a line to show the change from one album to the next in terms of 
-#|   energy/valence respectively. Under each set of albums is a dotted red line that displays
-#|   the average change over time among each of these values. The red dotted line along
-#|   with the rest of the plot show that there is a slight decrease, but seemingly 
-#|   insignificant, decrease in both energy and valence scores of her albums over time.
+
 
 #the plot
 ggplot(plot2a_data, aes(x = album_release)) +
@@ -289,8 +296,14 @@ Plot 2 (wrangle and plot)
 
 ```{r}
 #| label: question2b-wrangle-and-plot
-
-#the wrangle
+#| fig-alt: |
+#|   This figure is a bar plot titled "Original versus Taylor's Score Comparison"
+#|   that displays 8 total bars, each representing a different score value. On the 
+#|   left side of the plot, it dsiplays the user and metacritic score for both the 
+#|   original version of Fearless and the "Taylor's Version" of Fearless. On the right,
+#|   the same but this time for the two versions of the album Red. On top
+#|   of each bar is the score for the plots. The plot shows that all of the Taylor's Version
+#|   score higher than the original version for both metacritic and user scores.#the wrangle
 original_and_rereleased_albums <- c("Red", "Red (Taylor's Version)", "Fearless", "Fearless (Taylor's Version)")
 
 plot2b_data <- subset(taylor_albums, album_name %in% original_and_rereleased_albums) |>
@@ -310,25 +323,18 @@ plot2b_data <- plot2b_data |>
     score_type = fct_recode(score_type, "metacritic" = "metacritic_score", "user" = "user_score")
   )
 
-#| fig-alt: |
-#|   This figure is a bar plot titled "Original versus Taylor's Score Comparison"
-#|   that displays 8 total bars, each representing a different score value. On the 
-#|   left side of the plot, it dsiplays the user and metacritic score for both the 
-#|   original version of Fearless and the "Taylor's Version" of Fearless. On the right,
-#|   the same but this time for the two versions of the album Red. On top
-#|   of each bar is the score for the plots. The plot shows that all of the Taylor's Version
-#|   score higher than the original version for both metacritic and user scores.
+
 
 #the plot
 ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) + 
   geom_col(position = "dodge") + 
-  geom_text(aes(label = score), position = position_dodge(width = 0.9), vjust = -0.5, size = 3 ) +
+  geom_text(aes(label = score), position = position_dodge(width = 0.9), vjust = -0.1, size = 3 ) +
   facet_wrap(~album)+ 
   scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
   theme_bw() +
   labs(
     title = "Original versus Taylor's Score Comparison",
-    x = "Type of Score",
+    x = "Score Type",
     y = "Score",
     fill = "Taylor's Version?",
     caption = "Source: Tidy Tuesday Data"
