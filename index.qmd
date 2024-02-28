@@ -146,7 +146,7 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
   labs(
     title = "Tempo Distribution of Taylor Swift Songs",
     subtitle = "191 songs appearing only on an album versus 47 single releases",
-    x = "Tempo",
+    x = "Tempo (BPM)",
     y = "Release Type",
     caption = "Source: Tidy Tuesday Data"
   ) 
@@ -255,7 +255,7 @@ plot2a_data <- plot2a_data |>
 
 #the plot
 ggplot(plot2a_data, aes(x = album_release)) +
-  geom_line(aes(y = attribute_value), color = "#4D4D4D", size = 2) +
+  geom_line(aes(y = attribute_value), color = "#4D4D4D", linewidth = 2) +
   geom_point(aes(y = attribute_value, color = album_name), size = 7, shape = 18) +
   geom_smooth(aes(y = attribute_value), method = "lm", se = FALSE, color = "#E3183790", size =2, linetype = "dashed") +
   geom_label_repel(aes(y = attribute_value, label = album_name, fill = album_name), color = "white", size = 3, 
@@ -343,6 +343,25 @@ ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) +
 
 ```
 
+```{r}
+
+average_meta_scores <- plot2b_data %>%
+  filter(score_type == "metacritic") %>%
+  group_by(taylor_owned) %>%
+  summarise(average_metacritic_score = mean(score))
+
+average_user_scores <- plot2b_data %>%
+  filter(score_type == "user") %>%
+  group_by(taylor_owned) %>%
+  summarise(average_user_score = mean(score))
+```
+
 ### Discussion
 
 (1-3 paragraphs): In the Discussion section, interpret the results of your analysis. Identify any trends revealed (or not revealed) by the plots. Speculate about why the data looks the way it does.
+
+The scatter plot indicates that the energy and valence scores of Taylor Swift's albums have not changed over time, despite the fact that she has been making music for over 16 years. While there are some differences between energy and valence scores for different albums, the general trend, as indicated by the line of best fit, has been no change.
+
+The bar chart showing metacritic and user scores for albums that have both a Scooter version and Taylor version also allows us to make key insights about how Taylor Swift's songs have changed over time. Both the metacritic and user scores of the Taylor's version songs are higher than the those of the Scooter version songs. The average difference between metacritic scores is `{r} round(average_meta_scores$average_metacritic_score[average_meta_scores$taylor_owned == "Taylor's Version"] - average_meta_scores$average_metacritic_score[average_meta_scores$taylor_owned == "Scooter Owned"], digits = 2)`. The average difference between user scores is `{r} round(average_user_scores$average_user_score[average_user_scores$taylor_owned == "Taylor's Version"] - average_user_scores$average_user_score[average_user_scores$taylor_owned == "Scooter Owned"], digits = 2)`.
+
+The non-existent change over time in terms of energy and valence suggests that Taylor Swift has found a formula for her music that works and appeals to her audience. Given her immense success over time, it does not make sense for her to switch up her style of music. As they say, "if it ain't broke, don't fix it." Furthermore, the differences between metacritic and user scores for Taylor's version versus Scooter owned albums can be explained by a few possible explanations. The first is that it's possible that Taylor Swift's singing and music-making skills have improved over time. Since the Taylor's Version albums came out later than the Scooter owned albums, this explanation could explain why the scores of the Taylor's version albums are better. Furthermore, another possible explanation is that Taylor Swift's popularity has increased over time. This increase in popularity could lead to critics and users giving a better rating now than they would have 10 years ago.
