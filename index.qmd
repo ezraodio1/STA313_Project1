@@ -62,6 +62,7 @@ taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALS
 #|   release songs generally tend to have a higher energy score than the 
 #|   overall energy score of the album.
 
+# Wrangling Data for plot1a
 taylor_all_songs_including_singles <- taylor_all_songs |>
   drop_na(album_name) |>
   mutate(is_single = !(is.na(single_release)))
@@ -100,6 +101,7 @@ plot1a_data <- plot1a_data |>
                                                     "Lover", "folklore", "evermore", "Midnights")))
 
 
+# Plotting plot 1a
 ggplot(plot1a_data, aes(x = album_name, y = energy, fill = album_name)) +
   geom_col(position = "dodge") +
   geom_text(aes(label = round(energy, 2)), position = position_dodge(width = 0.9), vjust = -0.5, size = 2) +
@@ -135,11 +137,12 @@ ggplot(plot1a_data, aes(x = album_name, y = energy, fill = album_name)) +
 #|   The album released songs also have songs with over a 200 tempo, while the
 #|   single realeased songs do not.
 
+# Data wrangle for plot 1b 
 plot1b_data <- taylor_all_songs_including_singles |>
   drop_na(tempo)
 
 
-
+# Plotting for plot 1b
 ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
   geom_density_ridges(show.legend = FALSE) +
   scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
@@ -156,6 +159,10 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
     y = "Release Type",
     caption = "Source: Tidy Tuesday Data"
   ) 
+
+#citation: How to expand the height of the plot, found "expand_limits"
+#https://stackoverflow.com/questions/50213446/how-to-prevent-a-plot-cut-off
+
 ```
 
 ```{r}
@@ -164,6 +171,8 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
 #| warning: false
 #| message: false
 
+
+# Data frame for ease in the discussion section in line code 
 plot1a_data_for_writeup <- plot1a_data |> 
   group_by(album_name) |>
   summarise(album_energy = energy[song_type == "Album"],
@@ -233,7 +242,7 @@ taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALS
 #|   with the rest of the plot show that there is a slight decrease, but seemingly 
 #|   insignificant, decrease in both energy and valence scores of her albums over time.
 
-# the wrangle
+# the wrangle for plot 2a
 taylor_albums_stats <- taylor_all_songs |>
   drop_na(energy, valence) |>
   group_by(album_name) |>
@@ -264,7 +273,7 @@ plot2a_data <- plot2a_data |>
 
 
 
-#the plot
+#the plot for plot 2a
 ggplot(plot2a_data, aes(x = album_release)) +
   geom_line(aes(y = attribute_value), color = "#4D4D4D", linewidth = 2) +
   geom_point(aes(y = attribute_value, color = album_name), size = 7, shape = 18) +
@@ -316,6 +325,8 @@ ggplot(plot2a_data, aes(x = album_release)) +
 #|   the same but this time for the two versions of the album Red. On top
 #|   of each bar is the score for the plots. The plot shows that all of the Taylor's Version
 #|   score higher than the original version for both metacritic and user scores.#the wrangle
+
+# Wrangling Data for plot 2b
 original_and_rereleased_albums <- c("Red", "Red (Taylor's Version)", "Fearless", "Fearless (Taylor's Version)")
 
 plot2b_data <- subset(taylor_albums, album_name %in% original_and_rereleased_albums) |>
@@ -337,7 +348,7 @@ plot2b_data <- plot2b_data |>
 
 
 
-#the plot
+#the plot for plot 2b
 ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) + 
   geom_col(position = "dodge") + 
   geom_text(aes(label = score), position = position_dodge(width = 0.9), vjust = -0.1, size = 3 ) +
