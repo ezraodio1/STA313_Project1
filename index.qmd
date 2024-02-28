@@ -57,12 +57,14 @@ taylor_all_songs_including_singles <- taylor_all_songs |>
 
 taylor_albums_energy <- taylor_all_songs_including_singles |>
   drop_na(energy) |>
+  filter(is_single == FALSE) |>
   group_by(album_name) |>
   summarise(album_energy = mean(energy))
 
-taylor_singles_energy <- taylor_all_songs_including_singles %>%
-  filter(is_single == TRUE) %>%
-  group_by(album_name) %>%
+taylor_singles_energy <- taylor_all_songs_including_singles |>
+  drop_na(energy) |>
+  filter(is_single == TRUE) |>
+  group_by(album_name) |>
   summarise(singles_energy = mean(energy))
 
 
@@ -148,7 +150,7 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
 
 ### Discussion
 
-plot 1 says yada yada
+The faceted bar chart illustrates that energy scores of Taylor Swift's
 
 plot 2 blah blah, it is evident that the curves for single released songs and album released songs share a general shape.
 
