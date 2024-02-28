@@ -8,7 +8,7 @@ editor: visual
 
 ## Abstract
 
-(1 paragraph): Project abstract.
+Taylor Swift is an icon: Times' 2023 person of the year, one of the highest streaming artists in the world, and Travis Kelce's girlfriend. In this project, we set out to gain a deeper understanding of Taylor Swift's discography, specifically how her singles differ from album only songs and how her music has changed overtime. To do so, we created four data visualizations from the Taylor R package from Tidy Tuesday Data. We found that on average her singles had higher energy but lower tempo than album release tracks. Further, we found the energy and valence of her music hasn't changed much overtime. Lastly, we looked into how her re-recordings scored relative to her initial releases. By doing this, we were able to see that her metacritic and user scores have increased from the original release to Taylor's version.
 
 ------------------------------------------------------------------------
 
@@ -375,8 +375,6 @@ average_user_scores <- plot2b_data %>%
 ```
 
 ### Discussion
-
-(1-3 paragraphs): In the Discussion section, interpret the results of your analysis. Identify any trends revealed (or not revealed) by the plots. Speculate about why the data looks the way it does.
 
 The scatter plot indicates that the energy and valence scores of Taylor Swift's albums have not changed over time, despite the fact that she has been making music for over 16 years. While there are some differences between energy and valence scores for different albums, the general trend, as indicated by the line of best fit, has been no change.
 
