@@ -138,9 +138,15 @@ plot 2 blah blah, it is evident that the curves for single released songs and al
 
 ### Introduction
 
-One of the most incredible things about Taylor Swift is the longevity of her career and the evolution of her artist identity. She has created country music, pop music, folk music, etc. Additionally, she started her career at an notably young age. Her first album, Taylor Swift, came out in 2006 when the artist was merely 16 years old. Today, she is still making music. This sparked our interest in how her songs have changed overtime. We look at this question through two separate lenses: how has Taylor's literal music changed over time through attributes, such as energy and valence; and how Taylor's re-recordings of her albums vary in scores from critics and meta-scoring. To do this, we decided to use the taylor_all_songs and the taylor_albums .csv files. Specifically, we use the energy and valence variables from the taylor_all_songs data frame, and the user_score and metacritic_score from the taylor_albums data frame.
+One of the most incredible things about Taylor Swift is the longevity of her career and the evolution of her artist identity. She has created country music, pop music, folk music, etc. Additionally, she started her career at an notably young age. Her first album, Taylor Swift, came out in 2006 when the artist was merely 16 years old. Today, she is still making music. This sparked our interest in how her songs have changed overtime. Moreover, with Taylor's recent re-recordings, we wanted to look at how those re-recordings performed relative to the original recordings. We look at this question through two separate lenses: how has Taylor's literal music changed over time through attributes, such as energy and valence; and how Taylor's re-recordings of her albums vary in scores from critics and meta-scoring.
+
+To do this, we used the taylor_all_songs and the taylor_albums .csv files. Specifically, we use the energy and valence variables from the taylor_all_songs data frame, and the user_score and metacritic_score from the taylor_albums data frame.
 
 ### Approach
+
+For plot 1, we overlaid a line graph (geom_line), a scatter plot (geom_point), and added a trend line (geom_smooth) to portray how the valence and energy have changed in Taylor Swift's music over time. We chose to do so with a line graph, with each point emphasized and a trend line - indicating the trajectory of her music overtime. This plot is particularly great for observing this trend because each point is clear, which album it is, and you can see clearly how each album compares to the others.
+
+For plot 2, we used a bar graph (geom_col). In this plot, we wanted to address the differences in how Taylor Swift's re-releases scored relative to their original releases. We chose to do this with a faceted bar graph, because it makes very easy to compare the metacritic versus user scores. This is a very good plot to vizualize this data because the trends between Taylor's Version and the original Version are very accessible to the reader.
 
 ### Analysis
 
@@ -208,7 +214,8 @@ ggplot(plot2a_data, aes(x = album_release)) +
   ) +
   labs(
     title = "Taylor Swift album attributes over time",
-    x = "Album Release Date"
+    x = "Album Release Date",
+    caption = "Source: Tidy Tuesday Data"
   ) +
   theme(
     axis.title.y = element_blank(),
