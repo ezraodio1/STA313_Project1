@@ -73,6 +73,16 @@ plot1a_data <- plot1a_data |>
                                                     "Lover", "folklore", "evermore", "Midnights")))
 
 
+#| fig-alt: |
+#|   This figure is a bar chart titled "Energy Values of Taylor 
+#|   Swift Albums Versus Single Releases" that displays the energy of all
+#|   of Taylor Swifts songs from each of her albums, compared to the singles
+#|   off of each of those albums. Each bar represents the average energy score
+#|   of one album, listed in chronoligcal order. Each album is colored to
+#|   represent the main color of the album. The plot shows that the single
+#|   release songs generally tend to have a higher energy score than the 
+#|   overall energy score of the album.
+
 
 ggplot(plot1a_data, aes(x = album_name, y = energy, fill = album_name)) +
   geom_col(position = "dodge") +
@@ -103,6 +113,16 @@ ggplot(plot1a_data, aes(x = album_name, y = energy, fill = album_name)) +
 plot1b_data <- taylor_all_songs |>
   drop_na(tempo)
 
+
+#| fig-alt: |
+#|   This figure is a density ridge plot titled "Tempo Distribution of Taylor Swift Songs"
+#|   that dcompares the tempo of 47 single released
+#|   songs versus 191 songs released on Swift's albums. The single release density
+#|   ridge is right-skewed with a peak around a tempo of 90, while the album
+#|   released ridge is more normally distributed with a peak around 120 tempo.
+#|   The album released songs also have songs with over a 200 tempo, while the
+#|   single realeased songs do not.
+#|   
 
 ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
   geom_density_ridges(show.legend = FALSE) +

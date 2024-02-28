@@ -22,6 +22,8 @@ library(tidyverse)
 library(tidymodels)
 library(palmerpenguins)
 library(gt)
+library(ggridges)
+library(ggrepel)
 ```
 
 ```{r}
@@ -42,127 +44,260 @@ knitr::opts_chunk$set(
 #| label: load-data
 #| include: false
 
+taylor_all_songs <- readr::read_csv('data/taylor_all_songs.csv', show_col_types = FALSE)
+taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALSE)
+
 # Load your data here
+
+#| label: question1a-wrangle-and-plot
+
+taylor_all_songs_including_singles <- taylor_all_songs |>
+  drop_na(album_name) |>
+  mutate(is_single = !(is.na(single_release)))
+
+taylor_albums_energy <- taylor_all_songs_including_singles |>
+  drop_na(energy) |>
+  group_by(album_name) |>
+  summarise(album_energy = mean(energy))
+
+taylor_singles_energy <- taylor_all_songs_including_singles %>%
+  filter(is_single == TRUE) %>%
+  group_by(album_name) %>%
+  summarise(singles_energy = mean(energy))
+
+
+plot1a_data <- merge(taylor_albums_energy, taylor_singles_energy)
+
+
+plot1a_data <- plot1a_data |>
+  pivot_longer(
+    cols = c("album_energy", "singles_energy"),
+    names_to = "song_type",
+    values_to = "energy"
+  ) |>
+  mutate(
+    song_type = fct_recode(song_type, "Album" = "album_energy", "Single" = "singles_energy")
+  )
+
+plot1a_data <- plot1a_data |>
+  mutate(album_name = factor(album_name, levels = c("Taylor Swift", "Fearless",  "Fearless (Taylor's Version)",
+                                                    "Speak Now", "Red", "1989", "reputation",
+                                                    "Lover", "folklore", "evermore", "Midnights")))
 ```
+
+# Introduction
+
+## Our Data
+
+-   Idk I think Taylor Swift is kinda lame and boring
+
+-   Testing I guess
 
 # Q1: How do Taylor Swift's single releases differ from the songs on the full albums?
 
-## Plot 1
-
--   The presentation is created using the Quarto CLI
-
--   `##` sets the start of a new slide
-
-## Layouts
-
-You can use plain text
-
--   or bullet points
-
-::: columns
-::: {.column width="50%"}
-or text in two columns $^*$
-:::
-
-::: {.column width="50%"}
--   like
--   this
-:::
-:::
-
-### 
-
-::: aside
-\[\*\] And add footnotes
-:::
-
-## Code
+## Energy on Singles and Albums
 
 ```{r}
-#| label: boring-regression
 
-# a boring regression
-model <- lm(dist ~ speed, data = cars)
-tidy(model)
-glance(model)
-```
-
-## Plots
-
-```{r}
-#| label: recode-species
-#| echo: false
-
-# In this chunk I'm doing a bunch of analysis that I don't want to present 
-# in my slides. But I need the resulting data frame for a plot I want to present.
-
-penguins_modified <- penguins %>%
-  mutate(species = fct_other(species, keep = "Adelie"))
-```
-
-```{r}
-#| label: plot-penguins
-#| echo: false
-#| warning: false
 #| fig-alt: |
-#|   Body mass vs. flipper lenght of Palmer Penguins for species Adelie and all 
-#|   the others combined together. There is a relatively strong, positive 
-#|   relationship between the two variables. The Adelie penguins are clustered 
-#|   together but they don't exhibit a different trend than the rest of the 
-#|   penguins.
+#|   This figure is a bar chart titled "Energy Values of Taylor 
+#|   Swift Albums Versus Single Releases" that displays the energy of all
+#|   of Taylor Swifts songs from each of her albums, compared to the singles
+#|   off of each of those albums. Each bar represents the average energy score
+#|   of one album, listed in chronoligcal order. Each album is colored to
+#|   represent the main color of the album. The plot shows that the single
+#|   release songs generally tend to have a higher energy score than the 
+#|   overall energy score of the album.
 
-# Uses modified penguins dataset from previous chunk
-# Play around with height and width until you're happy with the look
-
-ggplot(
-  penguins_modified, 
-  aes(x = flipper_length_mm, y = body_mass_g, color = species)
-  ) +
-  geom_point() + 
-  theme_minimal()
+ggplot(plot1a_data, aes(x = album_name, y = energy, fill = album_name)) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = round(energy, 2)), position = position_dodge(width = 0.9), vjust = -0.5, size = 2) +
+  facet_wrap(~song_type) +
+  scale_fill_manual(values = c("#4497BA", "#BD9365", "#5F4A30", "#704073",
+                               "#982F47", "#7B96AF", "#0A0A0A", "#DEA9C9",
+                               "#4D4D4D", "#ACA38D", "#A26A5B")) +
+  theme_bw() +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  labs(
+    title = "Energy Values of Taylor Swift Albums Versus Single Releases",
+    subtitle = "Colored by Album",
+    x = "Albums",
+    y = "Energy",
+    fill = "Album",
+    caption = "Source: Tidy Tuesday Data"
+  )
 ```
 
-## Plot and text
+## Difference in Tempo in Singles
 
-::: columns
-::: {.column width="50%"}
--   Some text
--   goes here
-:::
-
-::: {.column width="50%"}
 ```{r}
+#| label: question1b-wrangle-and-plot
+#| 
+
+plot1b_data <- taylor_all_songs_including_singles |>
+  drop_na(tempo)
+
+#| fig-alt: |
+#|   This figure is a density ridge plot titled "Tempo Distribution of Taylor Swift Songs"
+#|   that dcompares the tempo of 47 single released
+#|   songs versus 191 songs released on Swift's albums. The single release density
+#|   ridge is right-skewed with a peak around a tempo of 90, while the album
+#|   released ridge is more normally distributed with a peak around 120 tempo.
+#|   The album released songs also have songs with over a 200 tempo, while the
+#|   single realeased songs do not.
+
+ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
+  geom_density_ridges(show.legend = FALSE) +
+  scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
+  scale_y_discrete(labels = c("Album", "Single")) +
+  theme_bw() +
+  labs(
+    title = "Tempo Distribution of Taylor Swift Songs",
+    subtitle = "191 songs appearing only on an album versus 47 single releases",
+    x = "Tempo",
+    y = "Release Type",
+    caption = "Source: Tidy Tuesday Data"
+  )
+```
+
+# Q2: How have Taylor Swift’s songs changed over time?
+
+## Energy and Valence Over Time
+
+```{r}
+#| label: question2a-wrangle-and-plot
 #| warning: false
-#| out-width: "100%"
-#| fig-width: 4
-#| echo: false
 
-# See how I changed out-width and fig-width from defaults
-# to make the figure bigger
+# the wrangle
+taylor_albums_stats <- taylor_all_songs |>
+  drop_na(energy, valence) |>
+  group_by(album_name) |>
+  summarise(
+    album_energy = mean(energy),
+    album_valence = mean(valence)
+  )
 
-ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot() +
-  theme_minimal()
+plot2a_data <- merge(taylor_albums, taylor_albums_stats)
+
+plot2a_data <- plot2a_data |>
+  pivot_longer(
+    cols = c("album_energy", "album_valence"),
+    names_to = "song_attribute",
+    values_to = "attribute_value"
+  ) |>
+  mutate(
+    song_attribute = fct_recode(song_attribute, "energy" = "album_energy", "valence" = "album_valence"),
+    album_name = factor(album_name, 
+                        levels = c("Midnights",  "evermore", "folklore",
+                                   "Lover", "reputation", "1989", 
+                                   "Red", "Speak Now", 
+                                   "Fearless (Taylor's Version)", 
+                                   "Fearless", "Taylor Swift", 
+                                   "The Taylor Swift Holiday Collection",
+                                   "Red (Taylor's Version)"))
+  )
+
+#| fig-alt: |
+#|   This figure is a point and line plot titled "Taylor Swift album attributes over time"
+#|   that displays the average energy and valence values of each Taylor swift album along 
+#|   the date at which the album was released. Each album is represented by a point, 
+#|   colored to match the album cover, and labeled witht eh album name. Also, each point
+#|   is connected by a line to show the change from one album to the next in terms of 
+#|   energy/valence respectively. Under each set of albums is a dotted red line that displays
+#|   the average change over time among each of these values. The red dotted line along
+#|   with the rest of the plot show that there is a slight decrease, but seemingly 
+#|   insignificant, decrease in both energy and valence scores of her albums over time.
+
+#the plot
+ggplot(plot2a_data, aes(x = album_release)) +
+  geom_line(aes(y = attribute_value), color = "#4D4D4D", size = 2) +
+  geom_point(aes(y = attribute_value, color = album_name), size = 7, shape = 18) +
+  geom_smooth(aes(y = attribute_value), method = "lm", se = FALSE, color = "#E3183790", size =2, linetype = "dashed") +
+  geom_label_repel(aes(y = attribute_value, label = album_name, fill = album_name), color = "white", size = 3, 
+                   nudge_y = 0.1, nudge_x = 100) +
+  scale_y_continuous(breaks = seq(0.0, 1.0, by = 0.1), limits = c(0, 1)) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  scale_color_manual(values = c("#A26A5B", "#ACA38D", "#4D4D4D", "#DEA9C9", 
+                               "#0A0A0A", "#7B96AF", "#982F47", "#704073", 
+                               "#5F4A30", "#BD9365", "#4497BA", "#BA372E", "#903F31")) +
+  scale_fill_manual(values = c("#A26A5B", "#ACA38D", "#4D4D4D", "#DEA9C9", 
+                               "#0A0A0A", "#7B96AF", "#982F47", "#704073", 
+                               "#5F4A30", "#BD9365", "#4497BA", "#BA372E", "#903F31")
+  ) +
+  labs(
+    title = "Taylor Swift album attributes over time",
+    x = "Album Release Date",
+    caption = "Source: Tidy Tuesday Data"
+  ) +
+  theme_bw() +
+  theme(
+    axis.title.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "none",
+    plot.title = element_text(size = 15, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(vjust = -1, size = 12),
+    strip.text = element_text(size = 12)
+  ) +
+  facet_wrap(~song_attribute, ncol = 1, labeller = 
+               labeller(song_attribute = c(energy = "Attribute: Energy", valence = "Attribute: Valence"))
+  )
 ```
-:::
-:::
 
-# A new section...
-
-## Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
+## Original Versus Taylor's Version
 
 ```{r}
-#| label: penguins-table
+#| label: question2b-wrangle-and-plot
 
-gt(head(penguins))
+#the wrangle
+original_and_rereleased_albums <- c("Red", "Red (Taylor's Version)", "Fearless", "Fearless (Taylor's Version)")
+
+plot2b_data <- subset(taylor_albums, album_name %in% original_and_rereleased_albums) |>
+  mutate(user_score = user_score*10, 
+         taylor_owned = ifelse(grepl("Taylor's Version", album_name), "Taylor's Version", "Scooter Owned"), 
+         album = case_when(grepl("Red", album_name) ~ "Red", 
+                           grepl("Fearless", album_name) ~ "Fearless", 
+                           TRUE ~ "" )) |>
+  select(album, metacritic_score, user_score, taylor_owned) 
+
+plot2b_data <- plot2b_data |>
+  pivot_longer(
+    cols = c("metacritic_score", "user_score"), 
+         names_to = "score_type", 
+         values_to = "score") |>
+  mutate(
+    score_type = fct_recode(score_type, "metacritic" = "metacritic_score", "user" = "user_score")
+  )
+
+#| fig-alt: |
+#|   This figure is a bar plot titled "Original versus Taylor's Score Comparison"
+#|   that displays 8 total bars, each representing a different score value. On the 
+#|   left side of the plot, it dsiplays the user and metacritic score for both the 
+#|   original version of Fearless and the "Taylor's Version" of Fearless. On the right,
+#|   the same but this time for the two versions of the album Red. On top
+#|   of each bar is the score for the plots. The plot shows that all of the Taylor's Version
+#|   score higher than the original version for both metacritic and user scores.
+
+#the plot
+ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) + 
+  geom_col(position = "dodge") + 
+  geom_text(aes(label = score), position = position_dodge(width = 0.9), vjust = -0.5, size = 3 ) +
+  facet_wrap(~album)+ 
+  scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
+  theme_bw() +
+  labs(
+    title = "Original versus Taylor's Score Comparison",
+    x = "Type of Score",
+    y = "Score",
+    fill = "Taylor's Version?",
+    caption = "Source: Tidy Tuesday Data"
+  )
 ```
 
 # Wrap up
 
-## Feeling adventurous?
+## Our Takeaways
 
--   You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
+-   Idk I think Taylor Swift is kinda lame and boring
 
--   But some of you might want to play around with slide styling. Some solutions for this can be found at https://quarto.org/docs/presentations/revealjs.
+-   Testing I guess

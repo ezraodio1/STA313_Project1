@@ -246,6 +246,7 @@ ggplot(plot2a_data, aes(x = album_release)) +
     x = "Album Release Date",
     caption = "Source: Tidy Tuesday Data"
   ) +
+  theme_bw() +
   theme(
     axis.title.y = element_blank(),
     panel.grid.minor = element_blank(),
