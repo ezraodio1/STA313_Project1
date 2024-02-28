@@ -33,9 +33,9 @@ taylor_albums_stats <- taylor_all_songs |>
     album_valence = mean(valence)
   )
 
-taylor_albums_plot2a <- merge(taylor_albums, taylor_albums_stats)
+plot2a_data <- merge(taylor_albums, taylor_albums_stats)
 
-taylor_albums_plot2a <- taylor_albums_plot2a |>
+plot2a_data <- plot2a_data |>
   pivot_longer(
     cols = c("album_energy", "album_valence"),
     names_to = "song_attribute",
@@ -58,7 +58,7 @@ taylor_albums_plot2a <- taylor_albums_plot2a |>
 ```{r fig.height = 8, fig.width = 11}
 #| label: plot2a_valence_energy_change_over_time
 
-ggplot(taylor_albums_plot2a, aes(x = album_release)) +
+ggplot(plot2a_data, aes(x = album_release)) +
   geom_line(aes(y = attribute_value), color = "#4D4D4D", size = 2) +
   geom_point(aes(y = attribute_value, color = album_name), size = 7, shape = 18) +
   geom_smooth(aes(y = attribute_value), method = "lm", se = FALSE, color = "#E3183790", size =2, linetype = "dashed") +
@@ -90,6 +90,7 @@ ggplot(taylor_albums_plot2a, aes(x = album_release)) +
   )
 
 ```
+
 
 ```{r}
 #| label: data-wrangle-plot2b

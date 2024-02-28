@@ -45,7 +45,7 @@ knitr::opts_chunk$set(
 # Load your data here
 ```
 
-# Q1: How do Taylor Swift's single releases differ from the songs on the full albums? 
+# Q1: How do Taylor Swift's single releases differ from the songs on the full albums?
 
 ## Plot 1
 
