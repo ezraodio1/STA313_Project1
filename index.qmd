@@ -14,7 +14,7 @@ editor: visual
 
 ## Introduction
 
-This project analyzes the Taylor Swift R package, which was created by W. Jake Thompson. The data comes from Genius and the Spotify API. The data set includes three .csv files: taylor_album_songs, taylor_all_songs, and taylor_albums. In our project, we only are only using the taylor_all_songs and taylor_albums data frames. This is because taylor_album_songs excludes singles releases and excludes the original releases of albums that now have a Taylor-owned alternative in support of artists wanting to own their own music; in our project, we wanted to include the original releases so we could compare them to the re-releases, and overall, provide a holisitic analysis of Talyor Swift overtime. Additionally, this project uses the taylor_albums dataset - in order to have data about each albums as a whole.
+This project analyzes the Taylor Swift R package, which was created by W. Jake Thompson. The data comes from Genius and the Spotify API. The data set includes three .csv files: taylor_album_songs, taylor_all_songs, and taylor_albums. In our project, we only are only using the taylor_all_songs and taylor_albums data frames. This is because taylor_album_songs excludes singles releases and excludes the original releases of albums that now have a Taylor-owned alternative in support of artists wanting to own their own music; in our project, we wanted to include the original releases so we could compare them to the re-releases, and overall, provide a holisitic analysis of Taylor Swift overtime. Additionally, this project uses the taylor_albums dataset - in order to have data about each albums as a whole.
 
 This project seeks to investigate two questions: The first being: How do Taylor Swift’s single releases differ from the songs on the full albums? Second, we explore: How have Taylor Swift’s songs changed over time? The variables used to answer these questions are from the two .csv files mentioned above. From taylor_albums, we used : album_name (Album name), album_release (Album release date), metacritic_score (Metacritic score), and user_score (User score). From taylor_all_songs, we used : album_name (Album name), album_release (Album release date), single_release (Single release date), energy (Spotify energy score - a measure from 0.0 to 1.0 that represents a perceptual measure of intensity and activity), valence (Spotify valence score from 0.0 to 1.0 - high valence sounds more positive, while low valence sounds more negative), and tempo (The overall estimated tempo of a track in beats per minute). More information about the data sets can be found in the README file.
 
@@ -35,12 +35,11 @@ For the second plot, we use a Ridgeline plot (geom_density_ridges) to compare th
 Load in Packages and Data
 
 ```{r}
-#| label: load-pkgs-and-data
+#| label: question1-load-pkgs-and-data
 
 library(tidyverse)
 library(ggridges)
 
-taylor_album_songs <- readr::read_csv('data/taylor_album_songs.csv', show_col_types = FALSE)
 taylor_all_songs <- readr::read_csv('data/taylor_all_songs.csv', show_col_types = FALSE)
 taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALSE)
 
@@ -135,19 +134,141 @@ plot 1 says yada yada
 
 plot 2 blah blah, it is evident that the curves for single released songs and album released songs share a general shape.
 
-## **Question 2**: Title that relates to the question you're answering
+## **Question 2**: How have Taylor Swift's songs changed over time?
 
 ### Introduction
 
-(1-2 paragraphs): Introduction to the question and what parts of the dataset are necessary to answer the question. Also discuss why you're interested in this question.
+One of the most incredible things about Taylor Swift is the longevity of her career and the evolution of her artist identity. She has created country music, pop music, folk music, etc. Additionally, she started her career at an notably young age. Her first album, Taylor Swift, came out in 2006 when the artist was merely 16 years old. Today, she is still making music. This sparked our interest in how her songs have changed overtime. We look at this question through two separate lenses: how has Taylor's literal music changed over time through attributes, such as energy and valence; and how Taylor's re-recordings of her albums vary in scores from critics and meta-scoring. To do this, we decided to use the taylor_all_songs and the taylor_albums .csv files. Specifically, we use the energy and valence variables from the taylor_all_songs data frame, and the user_score and metacritic_score from the taylor_albums data frame.
 
 ### Approach
 
-(1-2 paragraphs): Describe what types of plots you are going to make to address your question. For each plot, provide a clear explanation as to why this plot (e.g. boxplot, barplot, histogram, etc.) is best for providing the information you are asking about. The two plots should be of different types, and at least one of the two plots needs to use either color mapping or facets.
-
 ### Analysis
 
-(2-3 code blocks, 2 figures, text/code comments as needed): In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides. You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so. All plots must be made with **ggplot2**. Do not use base R or lattice plotting functions.
+Load in Packages and Data
+
+```{r}
+#| label: question2-load-pkgs-and-data
+
+library(tidyverse)
+library(ggrepel)
+
+taylor_all_songs <- readr::read_csv('data/taylor_all_songs.csv', show_col_types = FALSE)
+taylor_albums <- readr::read_csv('data/taylor_albums.csv', show_col_types = FALSE)
+```
+
+Plot 1 (wrangle and plot)
+
+```{r}
+#| label: question2a-wrangle-and-plot
+
+# the wrangle
+taylor_albums_stats <- taylor_all_songs |>
+  drop_na(energy, valence) |>
+  group_by(album_name) |>
+  summarise(
+    album_energy = mean(energy),
+    album_valence = mean(valence)
+  )
+
+plot2a_data <- merge(taylor_albums, taylor_albums_stats)
+
+plot2a_data <- plot2a_data |>
+  pivot_longer(
+    cols = c("album_energy", "album_valence"),
+    names_to = "song_attribute",
+    values_to = "attribute_value"
+  ) |>
+  mutate(
+    song_attribute = fct_recode(song_attribute, "energy" = "album_energy", "valence" = "album_valence"),
+    album_name = factor(album_name, 
+                        levels = c("Midnights",  "evermore", "folklore",
+                                   "Lover", "reputation", "1989", 
+                                   "Red", "Speak Now", 
+                                   "Fearless (Taylor's Version)", 
+                                   "Fearless", "Taylor Swift", 
+                                   "The Taylor Swift Holiday Collection",
+                                   "Red (Taylor's Version)"))
+  )
+
+#the plot
+ggplot(plot2a_data, aes(x = album_release)) +
+  geom_line(aes(y = attribute_value), color = "#4D4D4D", size = 2) +
+  geom_point(aes(y = attribute_value, color = album_name), size = 7, shape = 18) +
+  geom_smooth(aes(y = attribute_value), method = "lm", se = FALSE, color = "#E3183790", size =2, linetype = "dashed") +
+  geom_label_repel(aes(y = attribute_value, label = album_name, fill = album_name), color = "white", size = 3, 
+                   nudge_y = 0.1, nudge_x = 100) +
+  scale_y_continuous(breaks = seq(0.0, 1.0, by = 0.1), limits = c(0, 1)) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  scale_color_manual(values = c("#A26A5B", "#ACA38D", "#4D4D4D", "#DEA9C9", 
+                               "#0A0A0A", "#7B96AF", "#982F47", "#704073", 
+                               "#5F4A30", "#BD9365", "#4497BA", "#BA372E", "#903F31")) +
+  scale_fill_manual(values = c("#A26A5B", "#ACA38D", "#4D4D4D", "#DEA9C9", 
+                               "#0A0A0A", "#7B96AF", "#982F47", "#704073", 
+                               "#5F4A30", "#BD9365", "#4497BA", "#BA372E", "#903F31")
+  ) +
+  labs(
+    title = "Taylor Swift album attributes over time",
+    x = "Album Release Date"
+  ) +
+  theme(
+    axis.title.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "none",
+    plot.title = element_text(size = 15, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(vjust = -1, size = 12),
+    strip.text = element_text(size = 12)
+  ) +
+  facet_wrap(~song_attribute, ncol = 1, labeller = 
+               labeller(song_attribute = c(energy = "Attribute: Energy", valence = "Attribute: Valence"))
+  )
+
+
+
+
+```
+
+Plot 2 (wrangle and plot)
+
+```{r}
+#| label: question2b-wrangle-and-plot
+
+#the wrangle
+original_and_rereleased_albums <- c("Red", "Red (Taylor's Version)", "Fearless", "Fearless (Taylor's Version)")
+
+plot2b_data <- subset(taylor_albums, album_name %in% original_and_rereleased_albums) |>
+  mutate(user_score = user_score*10, 
+         taylor_owned = ifelse(grepl("Taylor's Version", album_name), "Taylor's Version", "Scooter Owned"), 
+         album = case_when(grepl("Red", album_name) ~ "Red", 
+                           grepl("Fearless", album_name) ~ "Fearless", 
+                           TRUE ~ "" )) |>
+  select(album, metacritic_score, user_score, taylor_owned) 
+
+plot2b_data <- plot2b_data |>
+  pivot_longer(
+    cols = c("metacritic_score", "user_score"), 
+         names_to = "score_type", 
+         values_to = "score") |>
+  mutate(
+    score_type = fct_recode(score_type, "metacritic" = "metacritic_score", "user" = "user_score")
+  )
+
+#the plot
+ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) + 
+  geom_col(position = "dodge") + 
+  geom_text(aes(label = score), position = position_dodge(width = 0.9), vjust = -0.5, size = 3 ) +
+  facet_wrap(~album)+ 
+  scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
+  theme_bw() +
+  labs(
+    title = "Original versus Taylor's Score Comparison",
+    x = "Type of Score",
+    y = "Score",
+    fill = "Taylor's Version?",
+    caption = "Source: Tidy Tuesday Data"
+  )
+
+
+```
 
 ### Discussion
 

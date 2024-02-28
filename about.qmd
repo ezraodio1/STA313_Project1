@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-This project was developed by **\[team name\]** For [STA/ISS 313: Advanced Data Visualization](https://vizdata.org/) at Duke University. The team is comprised of the following team members.
+This project was developed by **Team Robots** For [STA/ISS 313: Advanced Data Visualization](https://vizdata.org/) at Duke University. The team is comprised of the following team members.
 
 -   Ella Hartman: Senior from Birmingham, Alabama studying Computer Science and Economics.
 -   Noah Costa: Senior from Long Island, New York studying Computer Science
