@@ -131,8 +131,6 @@ ggplot(plot1a_data, aes(x = album_name, y = energy, fill = album_name)) +
   theme(axis.text.x = element_blank(),
         axis.ticks.x = element_blank()) +
   labs(
-    title = "Energy Values of Taylor Swift Albums Versus Single Releases",
-    subtitle = "Colored by Album",
     x = "Albums",
     y = "Energy",
     fill = "Album",
@@ -162,8 +160,9 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
   scale_y_discrete(labels = c("Album", "Single")) +
   expand_limits(y = 3.9) +
   theme_bw() +
+  theme(
+        plot.subtitle = element_text(hjust = 0.5))+
   labs(
-    title = "Tempo Distribution of Taylor Swift Songs",
     subtitle = "191 songs appearing only on an album versus 47 single releases",
     x = "Tempo (BPM)",
     y = "Release Type",
@@ -300,7 +299,6 @@ ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) +
   scale_fill_manual(values = c("#4D4D4D", "#DEA9C9")) +
   theme_bw() +
   labs(
-    title = "Original versus Taylor's Score Comparison",
     x = "Score Type",
     y = "Score",
     fill = "Taylor's Version?",
