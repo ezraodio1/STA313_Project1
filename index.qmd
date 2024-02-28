@@ -14,7 +14,7 @@ editor: visual
 
 ## Introduction
 
-This project analyzes the Taylor Swift R package, which was created by W. Jake Thompson. The data comes from Genius and the Spotify API. The data set includes three .csv files: taylor_album_songs, taylor_all_songs, and taylor_albums. In our project, we only are only using the taylor_all_songs and taylor_albums data frames. This is because taylor_album_songs excludes singles releases and excludes the original releases of albums that now have a Taylor-owned alternative in support of artists wanting to own their own music; in our project, we wanted to include the original releases so we could compare them to the re-releases, and overall, provide a holistic analysis of Taylor Swift overtime. Additionally, this project uses the taylor_albums dataset - in order to have data about each albums as a whole.
+This project analyzes the Taylor Swift R package, which was created by W. Jake Thompson. The data comes from Genius and the Spotify API. The data set includes three .csv files: taylor_album_songs, taylor_all_songs, and taylor_albums. In our project, we only are only using the taylor_all_songs and taylor_albums data frames. This is because taylor_album_songs excludes singles releases and excludes the original releases of albums that now have a Taylor-owned alternative; in our project, we wanted to include the original releases, so we could compare them to the re-releases, and overall, provide a holistic analysis of Taylor Swift overtime. Additionally, this project uses the taylor_albums dataset - in order to have data about each albums as a whole.
 
 This project seeks to investigate two questions: The first being: How do Taylor Swift’s single releases differ from the songs on the full albums? Second, we explore: How have Taylor Swift’s songs changed over time? The variables used to answer these questions are from the two .csv files mentioned above. From taylor_albums, we used : album_name (Album name), album_release (Album release date), metacritic_score (Metacritic score), and user_score (User score). From taylor_all_songs, we used : album_name (Album name), album_release (Album release date), single_release (Single release date), energy (Spotify energy score - a measure from 0.0 to 1.0 that represents a perceptual measure of intensity and activity), valence (Spotify valence score from 0.0 to 1.0 - high valence sounds more positive, while low valence sounds more negative), and tempo (The overall estimated tempo of a track in beats per minute). More information about the data sets can be found in the README file.
 
@@ -22,11 +22,11 @@ This project seeks to investigate two questions: The first being: How do Taylor 
 
 ### Introduction
 
-Choosing what songs to release as the singles before an album comes out is a key piece of strategy for any artist. The single should be a good representative of the album as a whole, should be very popular, and should leave the listener eager to hear the entire album. Many of Taylor Swift's most well known songs are her single releases, so we decided to see how her singles compare to the rest of her songs. We are interested to see if we can identify some components or aspects of songs that make them better candidates to be single releases, and in this way, we can understand Taylor Swift and her team's decision making process in a new way. To answer this question, we will use only the taylor_all_songs .csv file. Specifically, we will use the energy and tempo variables to compare single releases to album releases
+Choosing what songs to release as the singles before an album comes out is a key piece of strategy for any artist. The single should be a good representative of the album as a whole, should be very popular, and should leave the listener eager to hear the entire album. Many of Taylor Swift's most well known songs are her single releases, so we decided to see how the energy and tempo of her singles compare to the rest of her songs. From this, we hope to identify an aspect of her songs that make the songs better candidates to be single releases, and in this way, we can understand Taylor Swift and her team's decision making process in a new way. To answer this question, we will use only the taylor_all_songs .csv file. Specifically, we will use the energy and tempo variables to compare single releases to album releases
 
 ### Approach
 
-For the first plot, we use a barplot (geom_col) to compare the energy levels of songs, faceted based on whether the songs came out on a single release or on the regular album release. We chose this plot because it is makes it easy to compare the single energy values to the regular album energy values. Additionally, it makes it easy enables the reader to compare the energy values of singles or from albums across all of Taylor Swift's releases. We thought this would be a great visualization strategy because of how easy these comparisons can be made. For example, we can see that, on average, the single releases from the album 1989 were .09 higher than that of the 1989 album. Also, we can see that the single releases of Fearless (Taylor's Version) and the single releases from the original Fearless have a difference of .15 in their energy score.
+For the first plot, we use a barplot (geom_col) to compare the energy levels of songs, and we faceted based on whether the songs came out on a single release or on the regular album release. We chose this plot because it is makes it easy to compare the single energy values to the regular album energy values. Additionally, it enables the reader to compare the energy values of singles or from albums across all of Taylor Swift's releases. We thought this would be a great visualization strategy because of this ease.
 
 For the second plot, we use a Ridgeline plot (geom_density_ridges) to compare the tempo of songs released on an album versus as a single release. For this visualization, we chose a ridgeline plot because of the way it conveys the distribution of songs over the tempo range. With the two curves on the same plot, it makes it easy to see where they trend similarly and where they are different. This choice of ridgeline is great because it enables the reader to visualize how Taylor Swift's songs range in tempo based on their method of release.
 
@@ -36,6 +36,7 @@ Load in Packages and Data
 
 ```{r}
 #| label: question1-load-pkgs-and-data
+#| echo: false
 
 library(tidyverse)
 library(ggridges)
@@ -50,6 +51,7 @@ Plot 1 (wrangle and plot)
 
 ```{r}
 #| label: question1a-wrangle-and-plot
+#| echo: false
 #| fig-alt: |
 #|   This figure is a bar chart titled "Energy Values of Taylor 
 #|   Swift Albums Versus Single Releases" that displays the energy of all
@@ -123,6 +125,7 @@ Plot 2 (wrangle and plot)
 
 ```{r}
 #| label: question1b-wrangle-and-plot
+#| echo: false
 #| fig-alt: |
 #|   This figure is a density ridge plot titled "Tempo Distribution of Taylor Swift Songs"
 #|   that dcompares the tempo of 47 single released
@@ -154,6 +157,7 @@ ggplot(plot1b_data, aes(x = tempo, y = is_single, fill = is_single)) +
 
 ```{r}
 #| label: data_for_writeup
+#| echo: false
 
 plot1a_data_for_writeup <- plot1a_data |> 
   group_by(album_name) |>
@@ -199,6 +203,7 @@ Load in Packages and Data
 
 ```{r}
 #| label: question2-load-pkgs-and-data
+#| echo: false
 
 library(tidyverse)
 library(ggrepel)
@@ -211,6 +216,7 @@ Plot 1 (wrangle and plot)
 
 ```{r}
 #| label: question2a-wrangle-and-plot
+#| echo: false
 #| fig-alt: |
 #|   This figure is a point and line plot titled "Taylor Swift album attributes over time"
 #|   that displays the average energy and valence values of each Taylor swift album along 
@@ -296,6 +302,7 @@ Plot 2 (wrangle and plot)
 
 ```{r}
 #| label: question2b-wrangle-and-plot
+#| echo: false
 #| fig-alt: |
 #|   This figure is a bar plot titled "Original versus Taylor's Score Comparison"
 #|   that displays 8 total bars, each representing a different score value. On the 
@@ -344,6 +351,8 @@ ggplot(plot2b_data, aes(x= score_type, y = score, fill = taylor_owned)) +
 ```
 
 ```{r}
+#| label: data-frames-for-inline-code
+#| echo: false
 
 average_meta_scores <- plot2b_data %>%
   filter(score_type == "metacritic") %>%
